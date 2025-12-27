@@ -25,7 +25,7 @@ Es muss nun ein Formular erstellt werden, dass die folgenden Datenfelder ("Frage
 
 > **Warum Einschränkungen?** Die Einstellung "Zahl" verhindert, dass Texte wie "1 Stunde" eingegeben werden, womit Power BI nicht rechnen könnte.
 
-Dieses Formular erstellt man am einfachsten mit unterstützung einer KI - dem "Microsoft Copilot". Übergibt dieser KI folgende Anweisungen und sie erstellt das Formular automatisch für dich: 
+Dieses Formular erstellt man am einfachsten mit unterstützung einer KI - dem "Microsoft Copilot". Übergebe deshalb der "Microsoft Copilot" KI folgende Anweisungen und sie erstellt das Formular automatisch für dich: 
 
  * Datum
    * Typ: Datum
