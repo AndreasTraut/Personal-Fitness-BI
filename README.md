@@ -18,6 +18,8 @@ Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gle
 * **Effizienz-Metriken:** Berechnung des "Efficiency Index" (Verhältnis von Geschwindigkeit zu Herzfrequenz) zur objektiven Fitnessbewertung.
 * **Sportarten-Normalisierung:** Vergleichbarkeit verschiedener Sportarten (z.B. Schwimmen vs. Laufen) durch gewichtete Intensitätsfaktoren ("Fitness Points").
 
+![20251227_194234-COLLAGE](https://github.com/user-attachments/assets/7669da89-cf65-486f-a2ac-c796afebad28)
+
 ---
 
 ## ⚙️ Architektur & Workflow
