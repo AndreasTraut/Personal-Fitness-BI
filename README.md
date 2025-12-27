@@ -44,9 +44,10 @@ graph LR
 Die detaillierte Anleitung zur Replikation des Projekts findest du in den Docs:
 
 * **[Einrichtung & Setup](docs/01_setup_forms.md)** – Wie man Forms und Excel verbindet.
-* **[Datenmodellierung](docs/02_datenmodell.md)** – Erklärungen zu Fakten, Dimensionen und Beziehungen.
-* **[KPIs & Logik](docs/03_kpis.md)** – Deep-Dive in DAX-Formeln für Zielerreichung und Normalisierung.
-* **[Visualisierung](docs/04_visualisierung.md)** – Aufbau des Dashboards und Z-Layout.
+* **[Datenanbindung](docs/02_datenanbindung.md)**  – Wie man die Daten in PowerBI einbindet. 
+* **[Datenmodellierung](docs/03_datenmodell.md)** – Erklärungen zu Fakten, Dimensionen und Beziehungen.
+* **[KPIs & Logik](docs/04_kpis.md)** – Deep-Dive in DAX-Formeln für Zielerreichung und Normalisierung.
+* **[Visualisierung](docs/05_visualisierung.md)** – Aufbau des Dashboards und Z-Layout.
 
 ---
 

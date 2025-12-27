@@ -70,3 +70,6 @@ Du kannst nun Trainingseinheiten erfassen:
 1.  Öffne die Excel-Datei in OneDrive -> **Datei** -> **Informationen** -> **Pfad kopieren**.
 2.  Öffne Power BI Desktop -> **Daten abrufen** -> **Web** (Nicht Excel!).
 3.  Füge den Link ein und **LÖSCHE** den Teil `?web=1` am Ende.
+
+
+
