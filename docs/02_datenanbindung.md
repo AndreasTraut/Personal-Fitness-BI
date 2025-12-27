@@ -59,7 +59,7 @@ in
 > ⚠️ **Wichtiger Hinweis:** Der Pfad unter File.Contents ist absolut. Wenn das Projekt auf einen anderen PC umzieht oder der Benutzername abweicht, muss dieser Pfad in den Datenquelleneinstellungen angepasst werden.
 
 
-** Alternative: Der "Web"-Connector (Cloud-Direktzugriff)
+## Alternative: Der "Web"-Connector (Cloud-Direktzugriff)
 Es gibt eine alternative Methode, bei der Power BI die Datei direkt aus der Cloud lädt, ohne lokalen Sync. Diese wird oft in Unternehmensumgebungen bevorzugt.
 
 * **Connector:** Web (statt Excel).

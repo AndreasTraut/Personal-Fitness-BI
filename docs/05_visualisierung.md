@@ -1,34 +1,50 @@
 # 📊 Dashboard Layout & Visualisierung
 
-Das Dashboard folgt einem "Z-Layout" (Leserichtung von oben links nach unten rechts), um die wichtigsten Informationen zuerst zu zeigen.
+Das Dashboard ist in ein übersichtliches **Split-Layout** unterteilt: Auf der linken Seite befinden sich die detaillierten Zahlen (Matrix & Tabelle), während die rechte Seite die grafische Auswertung der Verläufe zeigt.
 
-<img width="1917" height="1074" alt="2025-12-27 19_26_54-" src="https://github.com/user-attachments/assets/85384bbc-6ea4-4235-9168-d3f8b289fdb4" />
+<img width="1917" height="1074" alt="Dashboard Screenshot" src="https://github.com/user-attachments/assets/85384bbc-6ea4-4235-9168-d3f8b289fdb4" />
 
 ## Bereich 1: Header & Filter
 Ganz oben befinden sich die globalen Steuerelemente:
 * **Titel:** "Personal Fitness BI"
-* **Slicer (Datenschnitt):** Filter für `Jahr` und `Trainingsart` ("Krafttraining", "Laufen", "Radfahren", "Schwimmen", "Sonstiges" etc.).
+* **Slicer (Datenschnitt):**
+    * **Jahr:** Dropdown-Auswahl (z.B. "2025").
+    * **Trainingsart:** Filter für spezifische Sportarten (z.B. "Laufen", "Radfahren") oder "Alle".
 
 ## Bereich 2: KPIs (Big Numbers)
-Eine Reihe mit **Karten-Visuals** für den schnellen Überblick:
-* Anzahl Trainingeinheiten
-* Distanz (km)
-* Dauer (Stunden)
-* Ø Effizienz (Fitness-Level).
+Die oberste Zeile unter dem Header liefert einen schnellen Überblick über die Gesamtleistung im gewählten Zeitraum:
+* **Trainingseinheiten:** Anzahl der durchgeführten Trainings.
+* **Distanz (km):** Gesamtkilometer.
+* **Dauer (Std):** Gesamtstunden.
+* **Effizienz:** Der berechnete Fitness-Indikator.
 
-## Bereich 3: Detail-Matrix
-Eine Tabelle für die genaue Analyse am unteren Rand:
-* **Zeilen:** `Jahr - Monat - Kalenderwoche` und `Trainingsart`
-* **Spalten:** `Art`
-* **Werte:** Trainingseinheiten, Dauer (Std), Ø kmh, Ø Distanz (km), Effizienz, Ø Puls.
-* **Formatierung:** Nutzung von **Datenbalken** für die Distanz, um hohe Werte visuell hervorzuheben.
+## Bereich 3: Der Daten-Bereich (Links)
+Die linke Seite des Dashboards ist für die genaue Analyse der Zahlen reserviert. Hier gibt es zwei Detail-Ansichten:
 
-## Bereich 4: Der Haupt-Verlauf
-Visualisierung der Zeitreihe mittels **Gestapeltem Säulendiagramm**:
-* **X-Achse:** `Jahr - Monat - Kalenderwoche` (aus der Kalendertabelle).
-* **Balken:** `Dauer` oder `Distanz`.
+### A. Die Hierarchie-Matrix (Mitte Links)
+Eine aggregierte Ansicht mit Drill-Down-Funktionalität.
+* **Zeilen-Hierarchie:** `Jahr` -> `Monat` -> `Kalenderwoche` -> `Trainingsart`.
+* **Werte:** Trainingseinheiten, Dauer (Std), Ø kmh, Distanz (km), Effizienz, Ø Puls.
+* **Besonderheit:** Ermöglicht das Aufklappen von Zeiträumen (z.B. "Dezember" -> "KW 50" -> "Laufen").
 
+### B. Die Detail-Tabelle (Unten Links)
+Eine flache Liste aller einzelnen Trainingseinheiten für den direkten Zugriff auf das Datum.
+* **Spalten:** `Kalenderwoche`, `Datum`, `Trainingsart`, `Dauer (Std)`, `Ø kmh`, `Distanz (km)`.
 
+## Bereich 4: Die Visualisierung (Rechts)
+Die rechte Seite visualisiert die Trends über die Zeit mittels zwei **Gestapelter Säulendiagramme**.
 
+### Diagramm 1: Dauer (Std) pro Kalenderwoche
+* **X-Achse:** `Kalenderwoche` (aus der Kalendertabelle).
+* **Y-Achse:** `Dauer (Std)`.
+* **Legende:** `Trainingsart` (Farbliche Unterscheidung der Sportarten).
+* **Zweck:** Zeigt auf einen Blick, in welcher Woche am meisten Zeit investiert wurde.
 
+### Diagramm 2: Distanz (km) pro Kalenderwoche
+* **X-Achse:** `Kalenderwoche`.
+* **Y-Achse:** `Distanz (km)`.
+* **Legende:** `Trainingsart`.
+* **Zweck:** Visualisiert die Umfänge, z.B. hohe Kilometerzahlen beim Radfahren im Vergleich zum Schwimmen.
 
+## Bereich 5: Footer
+Am unteren Rand befindet sich eine Infoleiste mit Autoren-Informationen und Rolle ("Senior Data Scientist").
