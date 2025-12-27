@@ -28,3 +28,5 @@ Visualisierung der Zeitreihe mittels **Gestapeltem Säulendiagramm**:
 
 
 
+
+
