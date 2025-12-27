@@ -1,0 +1,385 @@
+{
+  "name": "Personal Fitness BI",
+  "compatibilityLevel": 1567,
+  "model": {
+    "culture": "de-CH",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "de-CH",
+    "tables": [
+      {
+        "name": "fact_Training",
+        "lineageTag": "a3959c32-04ee-4f09-bb01-276d27ba2535",
+        "columns": [
+          {
+            "name": "Datum",
+            "dataType": "dateTime",
+            "sourceColumn": "Datum",
+            "formatString": "Short Date",
+            "lineageTag": "fef6012e-e53a-4041-bba2-73d15f9bd124",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ]
+          },
+          {
+            "name": "Trainingsart",
+            "dataType": "string",
+            "sourceColumn": "Trainingsart",
+            "lineageTag": "f5f8b2c9-4628-4d08-a48d-61e9e0805086",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Dauer (in Minuten)",
+            "dataType": "int64",
+            "sourceColumn": "Dauer (in Minuten)",
+            "formatString": "0",
+            "lineageTag": "023100b9-fb34-497d-b69c-f76e717feb87",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Distanz (in km)",
+            "dataType": "int64",
+            "sourceColumn": "Distanz (in km)",
+            "formatString": "0",
+            "lineageTag": "d5698842-cc62-45d4-9bee-6bc30f257185",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Durchschnitts-Puls",
+            "dataType": "int64",
+            "sourceColumn": "Durchschnitts-Puls",
+            "formatString": "0",
+            "lineageTag": "23298126-0112-40ef-8aa6-0b3b9a8ac757",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ]
+          },
+          {
+            "name": "Beschreibung / Notizen",
+            "dataType": "string",
+            "sourceColumn": "Beschreibung / Notizen",
+            "lineageTag": "8cbd5237-e4fd-425a-90e3-bc9392d81f16",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "fact_Training",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    // 1. Zugriff auf die lokale Datei (Pfad ist benutzerspezifisch!)",
+                "    Quelle = Excel.Workbook(File.Contents(\"C:\\Users\\andre\\OneDrive\\Dokumente\\Fraunhofer Data Scientist\\Personal Fitness BI\\Fitness.xlsx\"), null, true),",
+                "",
+                "    // 2. Navigation zur strukturierten Tabelle aus Forms",
+                "    Tabelle1_Table = Quelle{[Item=\"Tabelle1\",Kind=\"Table\"]}[Data],",
+                "",
+                "    // 3. Datentypen sauber definieren (Text vs. Zahl vs. Datum)",
+                "    #\"Geänderter Typ\" = Table.TransformColumnTypes(Tabelle1_Table,{{\"ID\", Int64.Type}, {\"Startzeit\", type datetime}, {\"Fertigstellungszeit\", type datetime}, {\"E-Mail\", type text}, {\"Name\", type any}, {\"Wann war das Training?\", type date}, {\"Was hast du gemacht?\", type text}, {\"Dauer (in Minuten)\", Int64.Type}, {\"Distanz (in km)\", Int64.Type}, {\"Durchschnitts-Puls\", Int64.Type}, {\"Beschreibung / Notizen\", type text}}),",
+                "    ",
+                "    // 4. Cleanup: Technische Forms-Spalten entfernen (Datenschutz & Speicher)",
+                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Geänderter Typ\",{\"ID\", \"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\"}),",
+                "    ",
+                "    // 5. Umbenennung für das Sternschema",
+                "    #\"Umbenannte Spalten\" = Table.RenameColumns(#\"Entfernte Spalten\",{{\"Was hast du gemacht?\", \"Trainingsart\"}, {\"Wann war das Training?\", \"Datum\"}})",
+                "in",
+                "    #\"Umbenannte Spalten\""
+              ]
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          },
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          }
+        ]
+      },
+      {
+        "name": "dim_Kalender",
+        "lineageTag": "f0f51e87-8a7c-4716-93eb-cb7a77293687",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Date",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Date]",
+            "formatString": "General Date",
+            "lineageTag": "ba9498a1-fbb1-44e2-96f6-69cb878aa6db",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Jahr",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Jahr]",
+            "formatString": "0",
+            "lineageTag": "b1bddb9c-978e-4e38-b78c-a00642e96821",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Monat",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Monat]",
+            "lineageTag": "f4f3a4f3-0c81-4fd0-a17f-a721e7c0d42e",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Kalenderwoche",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Kalenderwoche]",
+            "formatString": "0",
+            "lineageTag": "368e8135-2348-4bca-8828-3f05b7708cdc",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "JahrWoche",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[JahrWoche]",
+            "lineageTag": "66b2e775-4b37-41a5-9d8d-d2ef68c6fe8d",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Wochentag",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Wochentag]",
+            "lineageTag": "d7bee4cf-d733-4ac3-a150-b73fac63b93d",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_Kalender",
+            "mode": "import",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "",
+                "ADDCOLUMNS (",
+                "    CALENDAR (DATE(2025,1,1), DATE(2026,12,31)),",
+                "    \"Jahr\", YEAR([Date]),",
+                "    \"Monat\", FORMAT([Date], \"mmmm\"),",
+                "    \"Kalenderwoche\", WEEKNUM([Date], 21),",
+                "    \"JahrWoche\", FORMAT([Date], \"yyyy\") & \"-\" & FORMAT(WEEKNUM([Date], 21), \"00\"),",
+                "    \"Wochentag\", FORMAT([Date], \"dddd\")",
+                ")"
+              ]
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "PBI_Id",
+            "value": "e5b2a917d06c4a7d8d6dccaea11a4e57"
+          }
+        ]
+      },
+      {
+        "name": "_Kennzahlen",
+        "lineageTag": "7dfcb300-f648-495e-808f-ccca5fc8e592",
+        "partitions": [
+          {
+            "name": "_Kennzahlen",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    // Erzeugt eine leere Tabelle aus einem Base64-String (Das ist der Standard-Code für \"Daten eingeben\")",
+                "    // \"i44FAA==\" ist der kodierte Wert für eine leere Zelle/Tabelle.",
+                "    Quelle = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i44FAA==\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#\"Spalte \"\"1\"\"\" = _t]),",
+                "    ",
+                "    // Setzt den Datentyp der (leeren) Spalte auf Text, damit Power BI damit arbeiten kann",
+                "    #\"Geänderter Typ\" = Table.TransformColumnTypes(Quelle,{{\"Spalte \"\"1\"\"\", type text}}),",
+                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Geänderter Typ\",{\"Spalte \"\"1\"\"\"})",
+                "in",
+                "    // Gibt die leere Tabelle zurück, die wir als Container für Measures nutzen",
+                "    #\"Entfernte Spalten\""
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Dauer (Std)",
+            "expression": "SUM('fact_Training'[Dauer (in Minuten)]) / 60",
+            "formatString": "0.00",
+            "lineageTag": "0167ca47-c270-4de7-a9ad-374f95087b3c"
+          },
+          {
+            "name": "Ø kmh",
+            "expression": "DIVIDE( SUM('fact_Training'[Distanz (in km)]), [Dauer (Std)], 0 )",
+            "formatString": "#,0.0",
+            "lineageTag": "613c6e80-742b-4204-8a82-0ae3beff06ab"
+          },
+          {
+            "name": "Effizienz",
+            "expression": "DIVIDE( [Ø kmh], AVERAGE('fact_Training'[Durchschnitts-Puls]), 0 )",
+            "formatString": "0.00",
+            "lineageTag": "b342d0a2-2064-49ad-8c58-1a40a3a98b79"
+          },
+          {
+            "name": "Distanz (km)",
+            "expression": "SUM('fact_Training'[Distanz (in km)])",
+            "formatString": "0.0",
+            "lineageTag": "6b620efd-2365-4f1b-ac36-792a3df00372"
+          },
+          {
+            "name": "Trainingseinheiten",
+            "expression": "DISTINCTCOUNT( fact_Training[Datum])",
+            "formatString": "0",
+            "lineageTag": "54d32705-f951-40c2-98bf-cedfc3289dd1"
+          },
+          {
+            "name": "Ø Puls",
+            "expression": "DIVIDE( SUM('fact_Training'[Durchschnitts-Puls]), [Trainingseinheiten], 0 )",
+            "formatString": "0",
+            "lineageTag": "d068b0b0-0b91-4090-995e-a419d9dfb633"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "ef0b1418-47a3-8b79-adb1-68112e321c7c",
+        "fromTable": "fact_Training",
+        "fromColumn": "Datum",
+        "toTable": "dim_Kalender",
+        "toColumn": "Date"
+      }
+    ],
+    "cultures": [
+      {
+        "name": "de-CH",
+        "linguisticMetadata": {
+          "content": {
+            "Version": "1.0.0",
+            "Language": "en-US"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"fact_Training\",\"_Kennzahlen\"]"
+      },
+      {
+        "name": "TabularEditor_SerializeOptions",
+        "value": "{\"IgnoreInferredObjects\":true,\"IgnoreInferredProperties\":true,\"IgnoreTimestamps\":true,\"SplitMultilineStrings\":true,\"PrefixFilenames\":false,\"LocalTranslations\":false,\"LocalPerspectives\":false,\"LocalRelationships\":false,\"Levels\":[\"Data Sources\",\"Perspectives\",\"Relationships\",\"Roles\",\"Shared Expressions\",\"Tables\",\"Tables/Calculation Items\",\"Tables/Columns\",\"Tables/Hierarchies\",\"Tables/Measures\",\"Tables/Partitions\",\"Translations\"]}"
+      }
+    ]
+  }
+}
