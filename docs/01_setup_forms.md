@@ -17,7 +17,7 @@ Es muss nun ein Formular erstellt werden, dass die folgenden Datenfelder ("Frage
 | Frage | Typ | Wichtige Einstellung |
 | :--- | :--- | :--- |
 | **Datum** | Datum | "Erforderlich" ankreuzen. |
-| **Sportart** | Auswahl | Optionen: Laufen, Schwimmen, Radfahren, etc.. |
+| **Sportart** | Auswahl | Optionen: Krafttraining, Laufen, Radfahren, Schwimmen etc.. |
 | **Dauer (in Minuten)** | Text | Klicke auf `...` -> **Einschränkungen** -> Wähle **"Zahl"**. |
 | **Distanz (in km)** | Text | Einschränkung: **"Zahl"**. |
 | **Durchschnitts-Puls** | Text | Einschränkung: **"Zahl"**. |
@@ -34,7 +34,7 @@ Dieses Formular erstellt man am einfachsten mit unterstützung einer KI - dem "M
  * Sportart
    * Typ: Auswahl (Choice)
    * Frage: "Was hast du gemacht?"
-   * Optionen: Laufen, Schwimmen, Radfahren, Krafttraining, Sonstiges.
+   * Optionen: Krafttraining, Laufen, Radfahren, Schwimmen, Sonstiges.
    * Warum: So vermeidest du Schreibfehler (kein "Run" mal "Laufen"), was die Auswertung in Power BI viel leichter macht.
  * Dauer (in Minuten)
    * Typ: Text
