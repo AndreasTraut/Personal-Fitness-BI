@@ -9,7 +9,7 @@ Wir starten **nicht** in Forms, sondern in Excel Online. Das ist entscheidend, d
 2.  Erstelle eine **"Neue Excel-Arbeitsmappe"** und nenne sie z.B. `Fitness.xlsx`.
 3.  Klicke im Menüband auf **"Einfügen"** -> **"Forms"** -> **"Neues Formular"**.
 
-<img width="1264" height="495" alt="2025-12-27 18_51_47-2025-12-27 09_09_36-Einstellungen png" src="https://github.com/user-attachments/assets/fe3189a3-a774-4942-8154-881411de261e" />
+<img width="1264" height="495" alt="Form erstellen" src="https://github.com/user-attachments/assets/fe3189a3-a774-4942-8154-881411de261e" />
 
 ## 2. Das Formular gestalten
 Es muss nun ein Formular erstellt werden, dass die folgenden Datenfelder ("Fragen") enhält mit den spezifischen Datentypen, um Fehler in Power BI zu vermeiden: 
@@ -52,7 +52,7 @@ Dieses Formular erstellt man am einfachsten mit unterstützung einer KI - dem "M
    * Typ: Text
    * Option: "Lange Antwort" aktivieren (für Details wie "Intervalle, sehr anstrengend").
 
-<img width="861" height="1032" alt="2025-12-27 09_07_37-Einstellungen" src="https://github.com/user-attachments/assets/05514e31-a1c6-4b28-855d-7eac4a5ea50e" />
+<img width="861" height="1032" alt="Formular Trainingseintrag" src="https://github.com/user-attachments/assets/05514e31-a1c6-4b28-855d-7eac4a5ea50e" />
 
 ## 3. Mobile Nutzung ("App"-Feeling)
 1.  Klicke in Forms auf **"Antworten sammeln"** und kopiere den Link.
@@ -62,14 +62,7 @@ Dieses Formular erstellt man am einfachsten mit unterstützung einer KI - dem "M
 
 Du kannst nun Trainingseinheiten erfassen:
 
-<img width="863" height="1033" alt="2025-12-27 09_11_14-Einstellungen" src="https://github.com/user-attachments/assets/97b9c6c6-8e0f-4bb1-b0c7-febac6dfa75f" />
+<img width="863" height="1033" alt="Training erfassen" src="https://github.com/user-attachments/assets/97b9c6c6-8e0f-4bb1-b0c7-febac6dfa75f" />
 
-<img width="1702" height="427" alt="2025-12-27 09_16_18-Microsoft Store" src="https://github.com/user-attachments/assets/837b5674-c03d-4b4b-96e6-32cc8bc03764" />
-
-## 4. Verbindung zu Power BI
-1.  Öffne die Excel-Datei in OneDrive -> **Datei** -> **Informationen** -> **Pfad kopieren**.
-2.  Öffne Power BI Desktop -> **Daten abrufen** -> **Web** (Nicht Excel!).
-3.  Füge den Link ein und **LÖSCHE** den Teil `?web=1` am Ende.
-
-
+<img width="1702" height="427" alt="Trainingsdatensatz" src="https://github.com/user-attachments/assets/837b5674-c03d-4b4b-96e6-32cc8bc03764" />
 
