@@ -1,4 +1,5 @@
-## Wichtige Measures
+# 🧮 Wichtige Measures 
+
 Berechnungen finden nicht in Excel, sondern dynamisch in Power BI statt:
 
 **Dauer (Std):**
