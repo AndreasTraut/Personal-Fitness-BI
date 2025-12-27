@@ -46,7 +46,7 @@ Die detaillierte Anleitung zur Replikation des Projekts findest du in den Docs:
 * **[Einrichtung & Setup](docs/01_setup_forms.md)** – Wie man Forms und Excel verbindet.
 * **[Datenmodellierung](docs/02_datenmodell.md)** – Erklärungen zu Fakten, Dimensionen und Beziehungen.
 * **[KPIs & Logik](docs/03_kpis.md)** – Deep-Dive in DAX-Formeln für Zielerreichung und Normalisierung.
-* **[Visualisierung](docs/Fitness_Visualisierung.md)** – Aufbau des Dashboards und Z-Layout.
+* **[Visualisierung](docs/04_visualisierung.md)** – Aufbau des Dashboards und Z-Layout.
 
 ---
 
