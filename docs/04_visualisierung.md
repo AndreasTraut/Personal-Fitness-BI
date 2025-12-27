@@ -2,6 +2,9 @@
 
 Das Dashboard folgt einem "Z-Layout" (Leserichtung von oben links nach unten rechts), um die wichtigsten Informationen zuerst zu zeigen.
 
+<img width="1391" height="774" alt="2025-12-27 19_12_28-Personal Fitness BI" src="https://github.com/user-attachments/assets/2c3ec851-0a43-4922-ac9f-0b87a27d4618" />
+
+
 ## Bereich 1: Header & Filter
 Ganz oben befinden sich die globalen Steuerelemente:
 * **Titel:** "Personal Fitness BI"
@@ -21,7 +24,7 @@ Eine Tabelle für die genaue Analyse am unteren Rand:
 * **Werte:** Trainingseinheiten, Dauer (Std), Ø kmh, Ø Distanz (km), Effizienz, Ø Puls.
 * **Formatierung:** Nutzung von **Datenbalken** für die Distanz, um hohe Werte visuell hervorzuheben.
 
-## Bereich 3: Der Haupt-Verlauf
+## Bereich 4: Der Haupt-Verlauf
 Visualisierung der Zeitreihe mittels **Gestapeltem Säulendiagramm**:
 * **X-Achse:** `Jahr - Monat - Kalenderwoche` (aus der Kalendertabelle).
 * **Balken:** `Dauer` oder `Distanz`.

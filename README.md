@@ -55,7 +55,7 @@ Die detaillierte Anleitung zur Replikation des Projekts findest du in den Docs:
 1.  Repository klonen oder herunterladen.
 2.  Excel-Template (`/templates/Fitness_Tracker_Template.xlsx`) auf dein OneDrive hochladen.
 3.  Microsoft Form erstellen und mit dem Excel verknüpfen.
-4.  Power BI Datei (`Fitness_Dashboard.pbix`) öffnen.
+4.  Power BI Datei (`Personal Fitness BI.pbix`) öffnen.
 5.  Datenquelle in den Einstellungen auf deinen eigenen OneDrive-Link ändern.
 6.  Auf **Aktualisieren** klicken.
 
