@@ -2,8 +2,7 @@
 
 Das Dashboard folgt einem "Z-Layout" (Leserichtung von oben links nach unten rechts), um die wichtigsten Informationen zuerst zu zeigen.
 
-<img width="1391" height="774" alt="2025-12-27 19_12_28-Personal Fitness BI" src="https://github.com/user-attachments/assets/2c3ec851-0a43-4922-ac9f-0b87a27d4618" />
-
+<img width="1917" height="1074" alt="2025-12-27 19_26_54-" src="https://github.com/user-attachments/assets/85384bbc-6ea4-4235-9168-d3f8b289fdb4" />
 
 ## Bereich 1: Header & Filter
 Ganz oben befinden sich die globalen Steuerelemente:
