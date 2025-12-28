@@ -53,7 +53,7 @@ let
     }),
     
     // 4. Cleanup & Umbenennung
-    #"Entfernte Spalten" = Table.RemoveColumns(#"Geänderter Typ",{"ID", "Startzeit", "Fertigstellungszeit", "E-Mail", "Name"}),
+    #"Entfernte Spalten" = Table.RemoveColumns(#"Geänderter Typ",{"Startzeit", "Fertigstellungszeit", "E-Mail", "Name"}),
     #"Umbenannte Spalten" = Table.RenameColumns(#"Entfernte Spalten",{
         {"Was hast du gemacht?", "Trainingsart"}, 
         {"Wann war das Training?", "Datum"}
@@ -89,7 +89,7 @@ Eine spezielle Tabelle ohne Datenzeilen, die nur als Ordner für die DAX-Measure
 
 * **Dauer (Std):** `SUM('fact_Training'[Dauer (in Minuten)]) / 60`
 * **Distanz (km):** `SUM('fact_Training'[Distanz (in km)])`
-* **Trainingseinheiten:** ` DISTINCTCOUNT( fact_Training[Datum])` 
+* **Trainingseinheiten:** ` DISTINCTCOUNT( fact_Training[ID])` 
 * **Ø kmh:** `DIVIDE( SUM('fact_Training'[Distanz (in km)]), [Dauer (Std)], 0 )` 
 * **Ø Puls:** `DIVIDE( SUM('fact_Training'[Durchschnitts-Puls]), [Trainingseinheiten], 0 )`
 * **Effizienz:** `DIVIDE( [Ø kmh], AVERAGE('fact_Training'[Durchschnitts-Puls]), 0 )`
