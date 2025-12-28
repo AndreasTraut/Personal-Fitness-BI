@@ -5,7 +5,9 @@ Wir verwenden ein klassisches **Sternschema**, den Industriestandard für Power 
 ## Struktur & Diagramm
 
 * **Faktentabelle:** `fact_Training` (Die Messwerte)
-* **Dimensionstabelle:** `dim_Kalender` (Die Zeitachse)
+* **Dimensionstabellen:** 
+    * `dim_Kalender` (Die Zeitachse)
+    * `dim_Trainingsarten` (Die Sportarten)
 * **Measure-Tabelle:** `_Kennzahlen` (Container für Formeln)
 
 ```mermaid
@@ -20,7 +22,10 @@ erDiagram
         string JahrWoche
         string Wochentag
     }
-
+	
+    dim_Trainingsarten {
+        string Trainingsart PK "Eindeutige Liste"
+    }
     fact_Training {
         dateTime Datum FK
         string Trainingsart
@@ -81,7 +86,31 @@ ADDCOLUMNS (
 )
 ```
 
-## 3. Tabelle "_Kennzahlen" (Measure-Container)
+## 3. Tabelle "dim_Trainingsarten" (Dimension)
+Diese Tabelle wird dynamisch aus den Fakten generiert, um eine saubere Filtertabelle (z.B. für Slicer) bereitzustellen. Sie enthält jede Sportart genau einmal.
+
+**M-Code:**
+
+```powerquery
+let
+    // 1. Bezug auf die Faktentabelle nehmen
+    // Wir laden die bereits existierende Tabelle "fact_Training" als Quelle.
+    Quelle = fact_Training,
+
+    // 2. Spaltenauswahl
+    // Wir behalten nur die Spalte "Trainingsart" und entfernen alle anderen (Datum, Dauer etc.).
+    // Das macht die Tabelle sehr schmal und performant.
+    #"Andere entfernte Spalten" = Table.SelectColumns(Quelle,{"Trainingsart"}),
+    
+    // 3. Duplikate entfernen
+    // Wir wollen jede Sportart (z.B. "Laufen") nur genau einmal in der Liste haben.
+    // Das Ergebnis ist eine eindeutige Liste aller Sportarten für Filterzwecke.
+    #"Entfernte Duplikate" = Table.Distinct(#"Andere entfernte Spalten")
+in
+    #"Entfernte Duplikate"
+```
+
+## 4. Tabelle "_Kennzahlen" (Measure-Container)
 Eine spezielle Tabelle ohne Datenzeilen, die nur als Ordner für die DAX-Measures dient. Sie wird durch einen leeren Binary-Code erzeugt, um das "Taschenrechner"-Symbol in Power BI zu erhalten.
 
 **Enthaltene Measures:**
@@ -95,9 +124,11 @@ Eine spezielle Tabelle ohne Datenzeilen, die nur als Ordner für die DAX-Measure
 * **Effizienz:** `DIVIDE( [Ø kmh], AVERAGE('fact_Training'[Durchschnitts-Puls]), 0 )`
 
 ## Beziehungen
-Die Tabellen sind über das Datum verknüpft, sodass der Kalender alle Trainingsdaten filtern kann.
+Die Tabellen sind sternförmig um die Fakten angeordnet:
 
-* **Verknüpfung:** `dim_Kalender[Date]` -> `fact_Training[Datum]`.
+* **Verknüpfung:** 
+	* Zeit-Dimension: `dim_Kalender[Date]` -> `fact_Training[Datum]` 
+    * Sportart-Dimension: `dim_Trainingsarten[Trainingsart]` -> `fact_Training[Trainingsart]`
 * **Kardinalität:** Eins-zu-viele. – Ein Tag im Kalender kann mehrere Trainings haben.
 * **Richtung:** Einfach (Single) – Der Filter fließt vom Kalender zum Training.
 
