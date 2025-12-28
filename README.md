@@ -56,7 +56,7 @@ Die detaillierte Anleitung zur Replikation des Projekts findest du in den Docs:
 
 * **[Einrichtung & Setup](docs/01_setup_forms.md)** – Wie man Forms und Excel verbindet.
 * **[Datenanbindung](docs/02_datenanbindung.md)**  – Anleitung für den robusten lokalen Import (vs. Web-Connector).
-* **[Datenmodellierung](docs/03_datenmodell.md)** – Erklärungen zu Fakten (`fact_Training`), Dimensionen (`dim_Kalender`) und Beziehungen.
+* **[Datenmodellierung](docs/03_datenmodell.md)** – Erklärungen zu Fakten (`fact_Training`), Dimensionen (`dim_Kalender`, `dim_Trainingsarten`) und Beziehungen.
 * **[KPIs & Logik](docs/04_kpis.md)** – Dokumentation der DAX-Measures in der `_Kennzahlen` Tabelle.
 * **[Visualisierung](docs/05_visualisierung.md)** – Aufbau des Dashboards (Split-Layout).
 
