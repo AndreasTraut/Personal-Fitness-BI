@@ -28,8 +28,6 @@ Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gle
 
 ![Dashboard Screenshot](https://github.com/user-attachments/assets/7669da89-cf65-486f-a2ac-c796afebad28)
 
----
-
 ## ⚙️ Architektur & Workflow
 
 Der Datenfluss ist vollständig automatisiert ("Low-Code ETL"):
@@ -80,6 +78,8 @@ Die detaillierte Anleitung zur Replikation des Projekts findest du in den Docs:
 * **Analytics Engine:** Power BI Desktop
 * **Languages:** DAX (Data Analysis Expressions), M (Power Query)
 
+---
+
 ## 🧠 Eingesetzte KI: Google Gemini, Microsoft Copilot und GitHub Copilot
 
 Im Projekt wurden verschiedene KI‑Tools eingesetzt — jeweils dort, wo sie die Arbeit beschleunigen oder qualitativ verbessern: 
@@ -90,12 +90,14 @@ Im Projekt wurden verschiedene KI‑Tools eingesetzt — jeweils dort, wo sie di
 Alle KI‑Outputs wurden manuell geprüft und bei Bedarf angepasst. Die genannten KI‑Tools wurden gezielt in einzelnen Projektphasen eingesetzt:
 
 
-- **Definition der Eingabedaten & Feldtypen (Forms):** Entwurfsentscheidungen und Validierungsregeln mithilfe von Google Gemini erarbeitet. Siehe: [Einrichtung & Setup](docs/01_setup_forms.md).
+- **Definition der Eingabedaten & Feldtypen (Forms):** Entwurfsentscheidungen und Validierungsregeln mithilfe von Google Gemini erarbeitet.
 - **Erstellung des Microsoft Forms‑Formulars:** Automatisierte Anlage und Konfiguration über Microsoft Copilot, anschließend überprüft. Siehe: [Einrichtung & Setup](docs/01_setup_forms.md).
 - **Dokumentation des Stern‑Datenmodells (Mermaid):** Diagramme und textliche Beschreibungen mit Unterstützung von Google Gemini erstellt; [Mermaid](https://mermaid-js.github.io/mermaid/#/) für Diagramme. Siehe: [Datenmodellierung](docs/03_datenmodell.md).
 - **DAX‑Measures:** Entwurf, Formulierung und Variantenprüfung der Measures mit Google Gemini. Referenz: [KPIs & Logik](docs/04_kpis.md).
 - **Markdown‑Dokumentation:** Textentwürfe und Überarbeitungen mit Google Gemini und GitHub Copilot erstellt und verfeinert. Siehe die `docs/`-Ordnerinhalte.
 - **Commit‑Nachrichten / Git‑Workflow:** Vorschläge für aussagekräftige Commit‑Messages mithilfe von GitHub Copilot.
+
+---
 
 ## 🧰 Entwicklungstools
 
