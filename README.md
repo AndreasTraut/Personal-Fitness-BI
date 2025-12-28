@@ -80,16 +80,21 @@ Die detaillierte Anleitung zur Replikation des Projekts findest du in den Docs:
 * **Analytics Engine:** Power BI Desktop
 * **Languages:** DAX (Data Analysis Expressions), M (Power Query)
 
-## 🧠 Eingesetzte KI
+## 🧠 Eingesetzte KI: Google Gemini, Microsoft Copilot und GitHub Copilot
 
-Im Projekt wurden verschiedene KI‑Tools eingesetzt — jeweils dort, wo sie die Arbeit beschleunigen oder qualitativ verbessern. Alle KI‑Outputs wurden manuell geprüft und bei Bedarf angepasst.
+Im Projekt wurden verschiedene KI‑Tools eingesetzt — jeweils dort, wo sie die Arbeit beschleunigen oder qualitativ verbessern: 
+* [Google Gemini](https://developers.generativeai.google/) 
+* [Microsoft Copilot](https://www.microsoft.com/ai/copilot)
+* [GitHub Copilot](https://github.com/features/copilot)
 
-- **Definition der Eingabedaten & Feld-Typen (Forms):** Entwurfsentscheidungen und Validierungsregeln mit [Google Gemini](https://developers.generativeai.google/) unterstützt. Siehe auch: [Einrichtung & Setup](docs/01_setup_forms.md).
-- **Erstellung des Microsoft Forms Formulars:** Erstellung/Konfiguration mittels [Microsoft Copilot](https://www.microsoft.com/ai/copilot). Siehe: [Einrichtung & Setup](docs/01_setup_forms.md).    
-- **Dokumentation des Stern‑Datenmodells (Mermaid-Diagramme):** Diagramme und Beschreibungen mit Unterstützung von [Google Gemini](https://developers.generativeai.google/) erstellt; [Mermaid](https://mermaid-js.github.io/mermaid/#/) wurde für die Diagramme verwendet. Siehe: [Datenmodellierung](docs/03_datenmodell.md).
-- **DAX Measures:** Entwurf und Formulierung der Measures mit Hilfe von [Google Gemini](https://developers.generativeai.google/); Referenz: [KPIs & Logik](docs/04_kpis.md).    
-- **Generierung & Überarbeitung der Markdown-Dokumentation:** Textentwürfe und Formulierungen mit [Google Gemini](https://developers.generativeai.google/) und [GitHub Copilot](https://github.com/features/copilot) erstellt und verfeinert. Siehe die `docs/`-Ordnerinhalte.
-- **Commit-Nachrichten / Git‑Workflow-Hilfen:** Vorschläge für aussagekräftige Commit-Messages mithilfe von [GitHub Copilot](https://github.com/features/copilot).
+Alle KI‑Outputs wurden manuell geprüft und bei Bedarf angepasst.
+
+- **Definition der Eingabedaten & Feld-Typen (Forms):** Entwurfsentscheidungen und Validierungsregeln mit Google Gemini unterstützt. Siehe auch: [Einrichtung & Setup](docs/01_setup_forms.md).
+- **Erstellung des Microsoft Forms Formulars:** Erstellung/Konfiguration mittels Microsoft Copilot. Siehe: [Einrichtung & Setup](docs/01_setup_forms.md).    
+- **Dokumentation des Stern‑Datenmodells (Mermaid-Diagramme):** Diagramme und Beschreibungen mit Unterstützung von Google Gemini erstellt; [Mermaid](https://mermaid-js.github.io/mermaid/#/) wurde für die Diagramme verwendet. Siehe: [Datenmodellierung](docs/03_datenmodell.md).
+- **DAX Measures:** Entwurf und Formulierung der Measures mit Hilfe von Google Gemini; Referenz: [KPIs & Logik](docs/04_kpis.md).    
+- **Generierung & Überarbeitung der Markdown-Dokumentation:** Textentwürfe und Formulierungen mit Google Gemini und GitHub Copilot erstellt und verfeinert. Siehe die `docs/`-Ordnerinhalte.
+- **Commit-Nachrichten / Git‑Workflow-Hilfen:** Vorschläge für aussagekräftige Commit-Messages mithilfe von GitHub Copilot.
 
 ## 🧰 Entwicklungstools
 
@@ -97,4 +102,3 @@ Im Projekt wurden verschiedene KI‑Tools eingesetzt — jeweils dort, wo sie di
 * **[Power BI Desktop](https://powerbi.microsoft.com/)** — für Entwicklung und Testing der Berichte 
 * **[Tabular Editor](https://tabulareditor.com/)** — Bearbeitung des Tabular/DAX-Modells (externes Tool)
 * **[GitHub Desktop](https://desktop.github.com/)** — GUI für Git / GitHub-Workflows (optional)
-
