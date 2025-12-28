@@ -10,26 +10,28 @@ Wir verwenden ein klassisches **Sternschema**, den Industriestandard für Power 
     * `dim_Trainingsarten` (Die Sportarten)
 * **Measure-Tabelle:** `_Kennzahlen` (Container für Formeln)
 
+
 ```mermaid
 erDiagram
-    dim_Kalender ||--o{ fact_Training : "filtert"
-	dim_Trainingsarten ||--o{ fact_Training : "filtert"
+    dim_Kalender ||--o{ fact_Training : "filtert nach Datum"
+    dim_Trainingsarten ||--o{ fact_Training : "filtert nach Sportart"
     
     dim_Kalender {
-        datetime Date PK
+        date Date PK
         int Jahr
         string Monat
         int Kalenderwoche
         string JahrWoche
         string Wochentag
     }
-	
+
     dim_Trainingsarten {
         string Trainingsart PK "Eindeutige Liste"
     }
+
     fact_Training {
-        dateTime Datum FK
-        string Trainingsart
+        date Datum FK
+        string Trainingsart FK
         int64 Dauer_in_Minuten "Dauer (in Minuten)"
         int64 Distanz_in_km "Distanz (in km)"
         int64 Durchschnitts_Puls "Durchschnitts-Puls"

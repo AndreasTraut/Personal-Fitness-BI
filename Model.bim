@@ -79,7 +79,7 @@
             "sourceColumn": "Durchschnitts-Puls",
             "formatString": "0",
             "lineageTag": "23298126-0112-40ef-8aa6-0b3b9a8ac757",
-            "summarizeBy": "none",
+            "summarizeBy": "average",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
@@ -97,6 +97,20 @@
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "ID",
+            "dataType": "int64",
+            "sourceColumn": "ID",
+            "formatString": "0",
+            "lineageTag": "1f40e591-5dd7-477a-9664-9557f3d280e1",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
               }
             ]
           }
@@ -119,7 +133,7 @@
                 "    #\"Geänderter Typ\" = Table.TransformColumnTypes(Tabelle1_Table,{{\"ID\", Int64.Type}, {\"Startzeit\", type datetime}, {\"Fertigstellungszeit\", type datetime}, {\"E-Mail\", type text}, {\"Name\", type any}, {\"Wann war das Training?\", type date}, {\"Was hast du gemacht?\", type text}, {\"Dauer (in Minuten)\", Int64.Type}, {\"Distanz (in km)\", Int64.Type}, {\"Durchschnitts-Puls\", Int64.Type}, {\"Beschreibung / Notizen\", type text}}),",
                 "    ",
                 "    // 4. Cleanup: Technische Forms-Spalten entfernen (Datenschutz & Speicher)",
-                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Geänderter Typ\",{\"ID\", \"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\"}),",
+                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Geänderter Typ\",{\"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\"}),",
                 "    ",
                 "    // 5. Umbenennung für das Sternschema",
                 "    #\"Umbenannte Spalten\" = Table.RenameColumns(#\"Entfernte Spalten\",{{\"Was hast du gemacht?\", \"Trainingsart\"}, {\"Wann war das Training?\", \"Datum\"}})",
@@ -323,7 +337,7 @@
           },
           {
             "name": "Trainingseinheiten",
-            "expression": "DISTINCTCOUNT( fact_Training[Datum])",
+            "expression": "DISTINCTCOUNT( fact_Training[ID] )",
             "formatString": "0",
             "lineageTag": "54d32705-f951-40c2-98bf-cedfc3289dd1"
           },
@@ -332,6 +346,62 @@
             "expression": "DIVIDE( SUM('fact_Training'[Durchschnitts-Puls]), [Trainingseinheiten], 0 )",
             "formatString": "0",
             "lineageTag": "d068b0b0-0b91-4090-995e-a419d9dfb633"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ]
+      },
+      {
+        "name": "dim_Trainingsarten",
+        "lineageTag": "cb73cec5-c595-47ba-834a-01d28ab402be",
+        "columns": [
+          {
+            "name": "Trainingsart",
+            "dataType": "string",
+            "sourceColumn": "Trainingsart",
+            "lineageTag": "5b0dee17-6b1b-4bbb-8248-01d167ad64ad",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_Trainingsarten",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    // 1. Bezug auf die Faktentabelle nehmen",
+                "    // Wir laden die bereits existierende Tabelle \"fact_Training\" als Quelle.",
+                "    Quelle = fact_Training,",
+                "",
+                "    // 2. Spaltenauswahl",
+                "    // Wir behalten nur die Spalte \"Trainingsart\" und entfernen alle anderen (Datum, Dauer etc.).",
+                "    // Das macht die Tabelle sehr schmal und performant.",
+                "    #\"Andere entfernte Spalten\" = Table.SelectColumns(Quelle,{\"Trainingsart\"}),",
+                "    ",
+                "    // 3. Duplikate entfernen",
+                "    // Wir wollen jede Sportart (z.B. \"Laufen\") nur genau einmal in der Liste haben.",
+                "    // Das Ergebnis ist eine eindeutige Liste aller Sportarten für Filterzwecke.",
+                "    #\"Entfernte Duplikate\" = Table.Distinct(#\"Andere entfernte Spalten\")",
+                "in",
+                "    #\"Entfernte Duplikate\""
+              ]
+            }
           }
         ],
         "annotations": [
@@ -353,6 +423,13 @@
         "fromColumn": "Datum",
         "toTable": "dim_Kalender",
         "toColumn": "Date"
+      },
+      {
+        "name": "AutoDetected_a830844c-ca4f-41e6-b7c0-8850323690d4",
+        "fromTable": "fact_Training",
+        "fromColumn": "Trainingsart",
+        "toTable": "dim_Trainingsarten",
+        "toColumn": "Trainingsart"
       }
     ],
     "cultures": [
@@ -374,7 +451,7 @@
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"fact_Training\",\"_Kennzahlen\"]"
+        "value": "[\"_Kennzahlen\",\"fact_Training\",\"dim_Trainingsarten\"]"
       },
       {
         "name": "TabularEditor_SerializeOptions",
