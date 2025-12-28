@@ -13,6 +13,7 @@ Wir verwenden ein klassisches **Sternschema**, den Industriestandard für Power 
 ```mermaid
 erDiagram
     dim_Kalender ||--o{ fact_Training : "filtert"
+	dim_Trainingsarten ||--o{ fact_Training : "filtert"
     
     dim_Kalender {
         datetime Date PK
