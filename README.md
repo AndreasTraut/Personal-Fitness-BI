@@ -10,7 +10,7 @@ Eine vollständige End-to-End Business Intelligence Lösung für persönliches F
 
 🔗 [Vernetze dich auf LinkedIn](https://www.linkedin.com/in/andreas-traut-89340/)
 
-🔗 [Svhaue dir weitere, interessante BI Umsetzunen an](https://github.com/AndreasTraut)
+🔗 [Schaue dir weitere, interessante BI Umsetzunen an](https://github.com/AndreasTraut)
 
 ---
 
