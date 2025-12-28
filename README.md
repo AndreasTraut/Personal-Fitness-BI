@@ -10,7 +10,7 @@ Eine vollständige End-to-End Business Intelligence Lösung für persönliches F
 
 🔗 [Vernetze dich auf LinkedIn](https://www.linkedin.com/in/andreas-traut-89340/)
 
-🔗 [Schaue dir weitere, interessante BI Umsetzunen an](https://github.com/AndreasTraut)
+🔗 [Schaue dir weitere, interessante BI Umsetzungen an](https://github.com/AndreasTraut)
 
 ---
 
@@ -79,3 +79,22 @@ Die detaillierte Anleitung zur Replikation des Projekts findest du in den Docs:
 * **Database:** Microsoft Excel Online (via OneDrive for Business/Personal)
 * **Analytics Engine:** Power BI Desktop
 * **Languages:** DAX (Data Analysis Expressions), M (Power Query)
+
+## 🧠 Eingesetzte KI
+
+Im Projekt wurden verschiedene KI‑Tools eingesetzt — jeweils dort, wo sie die Arbeit beschleunigen oder qualitativ verbessern. Alle KI‑Outputs wurden manuell geprüft und bei Bedarf angepasst.
+
+- **Definition der Eingabedaten & Feld-Typen (Forms):** Entwurfsentscheidungen und Validierungsregeln mit [Google Gemini](https://developers.generativeai.google/) unterstützt. Siehe auch: [Einrichtung & Setup](docs/01_setup_forms.md).
+- **Erstellung des Microsoft Forms Formulars:** Erstellung/Konfiguration mittels [Microsoft Copilot](https://www.microsoft.com/ai/copilot). Siehe: [Einrichtung & Setup](docs/01_setup_forms.md).    
+- **Dokumentation des Stern‑Datenmodells (Mermaid-Diagramme):** Diagramme und Beschreibungen mit Unterstützung von [Google Gemini](https://developers.generativeai.google/) erstellt; [Mermaid](https://mermaid-js.github.io/mermaid/#/) wurde für die Diagramme verwendet. Siehe: [Datenmodellierung](docs/03_datenmodell.md).
+- **DAX Measures:** Entwurf und Formulierung der Measures mit Hilfe von [Google Gemini](https://developers.generativeai.google/); Referenz: [KPIs & Logik](docs/04_kpis.md).    
+- **Generierung & Überarbeitung der Markdown-Dokumentation:** Textentwürfe und Formulierungen mit [Google Gemini](https://developers.generativeai.google/) und [GitHub Copilot](https://github.com/features/copilot) erstellt und verfeinert. Siehe die `docs/`-Ordnerinhalte.
+- **Commit-Nachrichten / Git‑Workflow-Hilfen:** Vorschläge für aussagekräftige Commit-Messages mithilfe von [GitHub Copilot](https://github.com/features/copilot).
+
+## 🧰 Entwicklungstools
+
+ * **[Visual Studio Code](https://code.visualstudio.com/)** — Editor für Entwicklung und Bearbeitung von Projektdateien, Markdown, DAX und Power Query (M).
+* **[Power BI Desktop](https://powerbi.microsoft.com/)** — für Entwicklung und Testing der Berichte 
+* **[Tabular Editor](https://tabulareditor.com/)** — Bearbeitung des Tabular/DAX-Modells (externes Tool)
+* **[GitHub Desktop](https://desktop.github.com/)** — GUI für Git / GitHub-Workflows (optional)
+

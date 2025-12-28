@@ -54,7 +54,7 @@ Du kannst nun Trainingseinheiten erfassen:
 
 <img width="863" height="1033" alt="Training erfassen" src="https://github.com/user-attachments/assets/97b9c6c6-8e0f-4bb1-b0c7-febac6dfa75f" />
 
-Im Excel `Fitness.xlsx` sind die eingegebenen Trainingsdatensätze dann sichtbar: 
+Im Excel `Fitness.xlsx` sind die eingegebenen Trainingsdatensätze dann sichtbar. Von dort werden sie dann nach PowerBI geladen. Siehe **[Datenanbindung](docs/02_datenanbindung.md)**  – Anleitung für den robusten lokalen Import (vs. Web-Connector).
 
 <img width="1702" height="427" alt="Trainingsdatensatz" src="https://github.com/user-attachments/assets/837b5674-c03d-4b4b-96e6-32cc8bc03764" />
 
