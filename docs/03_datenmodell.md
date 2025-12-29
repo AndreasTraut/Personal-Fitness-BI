@@ -30,10 +30,11 @@ erDiagram
     }
 
     fact_Training {
+        int64 Id PK
         date Datum FK
         string Trainingsart FK
-        int64 Dauer_in_Minuten "Dauer (in Minuten)"
-        int64 Distanz_in_km "Distanz (in km)"
+        int64 Dauer_Minuten "Dauer (in Minuten)"
+        int64 Distanz_km "Distanz (in km)"
         int64 Durchschnitts_Puls "Durchschnitts-Puls"
         string Beschreibung_Notizen "Beschreibung / Notizen"
     }
@@ -48,14 +49,17 @@ Enthält die rohen Daten direkt aus dem Excel-Import. Jede Zeile repräsentiert 
 ```powerquery
 let
     // 1. Zugriff auf die lokale Datei
-    Quelle = Excel.Workbook(File.Contents("C:\Users\andre\OneDrive\Dokumente\Fraunhofer Data Scientist\Personal Fitness BI\Fitness.xlsx"), null, true),
+    Quelle = Excel.Workbook(File.Contents("C:\Users\andre\OneDrive\Trainingseintrag.xlsx"), null, true),
     
     // 2. Navigation
-    Tabelle1_Table = Quelle{[Item="Tabelle1",Kind="Table"]}[Data],
+    Tabelle1_Table = Quelle{[Item="OfficeForms.Table",Kind="Table"]}[Data],
+    
+    // 2b. Komma durch Punkt ersetzen
+    #"Ersetzter Wert" = Table.ReplaceValue(Tabelle1_Table,",",".",Replacer.ReplaceText,{"Distanz (in km)"}),
     
     // 3. Datentypen definieren
-    #"Geänderter Typ" = Table.TransformColumnTypes(Tabelle1_Table,{
-        {"ID", Int64.Type}, {"Startzeit", type datetime}, {"Wann war das Training?", type date}, 
+    #"Geänderter Typ" = Table.TransformColumnTypes(#"Ersetzter Wert",{
+        {"Id", Int64.Type}, {"Startzeit", type datetime}, {"Wann war das Training?", type date}, 
         {"Was hast du gemacht?", type text}, {"Dauer (in Minuten)", Int64.Type}, 
         {"Distanz (in km)", Int64.Type}, {"Durchschnitts-Puls", Int64.Type}
     }),
@@ -83,7 +87,7 @@ ADDCOLUMNS (
     CALENDAR (DATE(2025,1,1), DATE(2026,12,31)),
     "Jahr", YEAR([Date]),
     "Monat", FORMAT([Date], "mmmm"),
-    "Kalenderwoche", WEEKNUM([Date], 21),
+    "Kalenderwoche", WEEKNUM([Date], 2), -- 2 ist Standard, 21 ist ISO-8601 Normiert
     "JahrWoche", FORMAT([Date], "yyyy") & "-" & FORMAT(WEEKNUM([Date], 21), "00"),
     "Wochentag", FORMAT([Date], "dddd")
 )
@@ -121,7 +125,7 @@ Eine spezielle Tabelle ohne Datenzeilen, die nur als Ordner für die DAX-Measure
 
 * **Dauer (Std):** `SUM('fact_Training'[Dauer (in Minuten)]) / 60`
 * **Distanz (km):** `SUM('fact_Training'[Distanz (in km)])`
-* **Trainingseinheiten:** ` DISTINCTCOUNT( fact_Training[ID])` 
+* **Trainingseinheiten:** `DISTINCTCOUNT( fact_Training[Id])` 
 * **Ø kmh:** `DIVIDE( SUM('fact_Training'[Distanz (in km)]), [Dauer (Std)], 0 )` 
 * **Ø Puls:** `DIVIDE( SUM('fact_Training'[Durchschnitts-Puls]), [Trainingseinheiten], 0 )`
 * **Effizienz:** `DIVIDE( [Ø kmh], AVERAGE('fact_Training'[Durchschnitts-Puls]), 0 )`

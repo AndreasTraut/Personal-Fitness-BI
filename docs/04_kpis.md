@@ -34,9 +34,9 @@ Dauer (Std) = SUM('fact_Training'[Dauer (in Minuten)]) / 60
 Distanz (km) = SUM('fact_Training'[Distanz (in km)])
 ```
 
-**Trainingseinheiten:** Zählt die Anzahl der einzigartigen Tage, an denen ein Training stattgefunden hat (nutzt `DISTINCTCOUNT`, um doppelte Einträge pro Tag nur einfach zu zählen)
+**Trainingseinheiten:** Zählt die Anzahl der einzigartigen Trainings-IDs (nutzt `DISTINCTCOUNT`, um jede Trainingseinheit nur einmal zu zählen)
 ```dax
-Trainingseinheiten = DISTINCTCOUNT( fact_Training[ID])
+Trainingseinheiten = DISTINCTCOUNT( fact_Training[Id])
 ```
 
 **Ø kmh:** Berechnet die Durchschnittsgeschwindigkeit. Nutzt DIVIDE zur sicheren Division (vermeidet Fehler bei Division durch Null).
@@ -54,5 +54,5 @@ Trainingseinheiten = DISTINCTCOUNT( fact_Training[ID])
 ***Effizienz:*** Ein Index für das Verhältnis von Leistung (Speed) zu Aufwand (Puls).
 
 ```dax
-Effizienz = DIVIDE( [Ø kmh], AVERAGE('fact_Training'[Herzfrequenz]), 0 )
+Effizienz = DIVIDE( [Ø kmh], AVERAGE('fact_Training'[Durchschnitts-Puls]), 0 )
 ```

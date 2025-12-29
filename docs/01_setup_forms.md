@@ -6,7 +6,7 @@ Diese Anleitung erklärt den Prozess, um die Datenerfassung einzurichten. Wir nu
 Wir starten **nicht** in Forms, sondern in Excel Online. Das ist entscheidend, damit die Daten automatisch an einem definierten Ort in deinem OneDrive landen.
 
 1.  Gehe am PC auf [onedrive.live.com](https://onedrive.live.com/) oder office.com.
-2.  Erstelle eine **"Neue Excel-Arbeitsmappe"** und nenne sie z.B. `Fitness.xlsx`.
+2.  Erstelle eine **"Neue Excel-Arbeitsmappe"** und nenne sie z.B. `Trainingseintrag.xlsx`.
 3.  Klicke im Menüband auf **"Einfügen"** -> **"Forms"** -> **"Neues Formular"**.
 
 <img width="1264" height="495" alt="Form erstellen" src="https://github.com/user-attachments/assets/fe3189a3-a774-4942-8154-881411de261e" />
@@ -54,7 +54,7 @@ Du kannst nun Trainingseinheiten erfassen:
 
 <img width="863" height="1033" alt="Training erfassen" src="https://github.com/user-attachments/assets/97b9c6c6-8e0f-4bb1-b0c7-febac6dfa75f" />
 
-Im Excel `Fitness.xlsx` sind die eingegebenen Trainingsdatensätze dann sichtbar. Von dort werden sie dann nach PowerBI geladen. Siehe **[Datenanbindung](d02_datenanbindung.md)**  – Anleitung für den robusten lokalen Import (vs. Web-Connector).
+Im Excel `Trainingseintrag.xlsx` sind die eingegebenen Trainingsdatensätze dann sichtbar. Von dort werden sie dann nach PowerBI geladen. Siehe **[Datenanbindung](02_datenanbindung.md)**  – Anleitung für den robusten lokalen Import (vs. Web-Connector).
 
 <img width="1702" height="427" alt="Trainingsdatensatz" src="https://github.com/user-attachments/assets/837b5674-c03d-4b4b-96e6-32cc8bc03764" />
 

@@ -13,8 +13,8 @@ Anstatt dass Power BI versucht, sich über das Internet in dein OneDrive einzulo
 1.  Klicke in Power BI Desktop auf **"Daten abrufen"**.
 2.  Wähle **"Excel-Arbeitsmappe"** (Nicht "Web"!).
 3.  Navigiere in deinem Datei-Explorer zu deinem lokalen OneDrive-Ordner:
-    `C:\Users\DeinName\OneDrive\...\Fitness.xlsx`
-4.  Wähle im Navigator **Tabelle1** aus (Das Icon mit dem blauen Header).
+    `C:\Users\DeinName\OneDrive\...\Trainingseintrag.xlsx`
+4.  Wähle im Navigator **OfficeForms.Table** aus (Das Icon mit dem blauen Header).
 
 ## 3. Power Query Transformation (M-Code)
 Für eine saubere Datenbasis wurden direkt beim Import technische Spalten von Microsoft Forms entfernt und Datentypen angepasst.
@@ -24,14 +24,17 @@ Hier ist der verwendete **M-Code** (Erweiterter Editor):
 ```powerquery
 let
     // 1. Zugriff auf die lokale Datei (Pfad ist benutzerspezifisch!)
-    Quelle = Excel.Workbook(File.Contents("C:\Users\andre\OneDrive\Dokumente\Fraunhofer Data Scientist\Personal Fitness BI\Fitness.xlsx"), null, true),
+    Quelle = Excel.Workbook(File.Contents("C:\Users\andre\OneDrive\Trainingseintrag.xlsx"), null, true),
     
     // 2. Navigation zur strukturierten Tabelle aus Forms
-    Tabelle1_Table = Quelle{[Item="Tabelle1",Kind="Table"]}[Data],
+    Tabelle1_Table = Quelle{[Item="OfficeForms.Table",Kind="Table"]}[Data],
+    
+    // 2b. Komma durch Punkt ersetzen (für deutsche Dezimaltrennzeichen)
+    #"Ersetzter Wert" = Table.ReplaceValue(Tabelle1_Table,",",".",Replacer.ReplaceText,{"Distanz (in km)"}),
     
     // 3. Datentypen sauber definieren (Text vs. Zahl vs. Datum)
-    #"Geänderter Typ" = Table.TransformColumnTypes(Tabelle1_Table,{
-        {"ID", Int64.Type}, 
+    #"Geänderter Typ" = Table.TransformColumnTypes(#"Ersetzter Wert",{
+        {"Id", Int64.Type}, 
         {"Startzeit", type datetime}, 
         {"Fertigstellungszeit", type datetime}, 
         {"E-Mail", type text}, 
@@ -45,7 +48,7 @@ let
     ),
     
     // 4. Cleanup: Technische Forms-Spalten entfernen (Datenschutz & Speicher)
-    #"Entfernte Spalten" = Table.RemoveColumns(#"Geänderter Typ",{"ID", "Startzeit", "Fertigstellungszeit", "E-Mail", "Name"}),
+    #"Entfernte Spalten" = Table.RemoveColumns(#"Geänderter Typ",{"Startzeit", "Fertigstellungszeit", "E-Mail", "Name"}),
     
     // 5. Umbenennung für das Sternschema
     #"Umbenannte Spalten" = Table.RenameColumns(#"Entfernte Spalten",{

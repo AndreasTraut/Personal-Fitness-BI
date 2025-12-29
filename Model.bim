@@ -101,16 +101,16 @@
             ]
           },
           {
-            "name": "ID",
+            "name": "Id",
             "dataType": "int64",
-            "sourceColumn": "ID",
+            "sourceColumn": "Id",
             "formatString": "0",
-            "lineageTag": "1f40e591-5dd7-477a-9664-9557f3d280e1",
-            "summarizeBy": "none",
+            "lineageTag": "199bf98a-5c08-4779-80c7-21267745c148",
+            "summarizeBy": "count",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
-                "value": "User"
+                "value": "Automatic"
               }
             ]
           }
@@ -124,13 +124,14 @@
               "expression": [
                 "let",
                 "    // 1. Zugriff auf die lokale Datei (Pfad ist benutzerspezifisch!)",
-                "    Quelle = Excel.Workbook(File.Contents(\"C:\\Users\\andre\\OneDrive\\Dokumente\\Fraunhofer Data Scientist\\Personal Fitness BI\\Fitness.xlsx\"), null, true),",
+                "    Quelle = Excel.Workbook(File.Contents(\"C:\\Users\\andre\\OneDrive\\Trainingseintrag.xlsx\"), null, true),",
                 "",
                 "    // 2. Navigation zur strukturierten Tabelle aus Forms",
-                "    Tabelle1_Table = Quelle{[Item=\"Tabelle1\",Kind=\"Table\"]}[Data],",
+                "    Tabelle1_Table = Quelle{[Item=\"OfficeForms.Table\",Kind=\"Table\"]}[Data],",
+                "    #\"Ersetzter Wert\" = Table.ReplaceValue(Tabelle1_Table,\",\",\".\",Replacer.ReplaceText,{\"Distanz (in km)\"}),",
                 "",
                 "    // 3. Datentypen sauber definieren (Text vs. Zahl vs. Datum)",
-                "    #\"Geänderter Typ\" = Table.TransformColumnTypes(Tabelle1_Table,{{\"ID\", Int64.Type}, {\"Startzeit\", type datetime}, {\"Fertigstellungszeit\", type datetime}, {\"E-Mail\", type text}, {\"Name\", type any}, {\"Wann war das Training?\", type date}, {\"Was hast du gemacht?\", type text}, {\"Dauer (in Minuten)\", Int64.Type}, {\"Distanz (in km)\", Int64.Type}, {\"Durchschnitts-Puls\", Int64.Type}, {\"Beschreibung / Notizen\", type text}}),",
+                "    #\"Geänderter Typ\" = Table.TransformColumnTypes(#\"Ersetzter Wert\",{{\"Id\", Int64.Type}, {\"Startzeit\", type datetime}, {\"Fertigstellungszeit\", type datetime}, {\"E-Mail\", type text}, {\"Name\", type any}, {\"Wann war das Training?\", type date}, {\"Was hast du gemacht?\", type text}, {\"Dauer (in Minuten)\", Int64.Type}, {\"Distanz (in km)\", Int64.Type}, {\"Durchschnitts-Puls\", Int64.Type}, {\"Beschreibung / Notizen\", type text}}),",
                 "    ",
                 "    // 4. Cleanup: Technische Forms-Spalten entfernen (Datenschutz & Speicher)",
                 "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Geänderter Typ\",{\"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\"}),",
@@ -270,7 +271,7 @@
                 "    CALENDAR (DATE(2025,1,1), DATE(2026,12,31)),",
                 "    \"Jahr\", YEAR([Date]),",
                 "    \"Monat\", FORMAT([Date], \"mmmm\"),",
-                "    \"Kalenderwoche\", WEEKNUM([Date], 21),",
+                "    \"Kalenderwoche\", WEEKNUM([Date], 2), -- 2 ist Standard, 21 ist ISO-8601 Normiert",
                 "    \"JahrWoche\", FORMAT([Date], \"yyyy\") & \"-\" & FORMAT(WEEKNUM([Date], 21), \"00\"),",
                 "    \"Wochentag\", FORMAT([Date], \"dddd\")",
                 ")"
@@ -418,18 +419,18 @@
     ],
     "relationships": [
       {
-        "name": "ef0b1418-47a3-8b79-adb1-68112e321c7c",
-        "fromTable": "fact_Training",
-        "fromColumn": "Datum",
-        "toTable": "dim_Kalender",
-        "toColumn": "Date"
-      },
-      {
         "name": "AutoDetected_a830844c-ca4f-41e6-b7c0-8850323690d4",
         "fromTable": "fact_Training",
         "fromColumn": "Trainingsart",
         "toTable": "dim_Trainingsarten",
         "toColumn": "Trainingsart"
+      },
+      {
+        "name": "ef0b1418-47a3-8b79-adb1-68112e321c7c",
+        "fromTable": "fact_Training",
+        "fromColumn": "Datum",
+        "toTable": "dim_Kalender",
+        "toColumn": "Date"
       }
     ],
     "cultures": [
