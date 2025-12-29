@@ -2,7 +2,7 @@
 
 Das Dashboard ist in ein übersichtliches **Split-Layout** unterteilt: Auf der linken Seite befinden sich die detaillierten Zahlen (Matrix & Tabelle), während die rechte Seite die grafische Auswertung der Verläufe zeigt.
 
-<img width="1917" height="1074" alt="Dashboard Screenshot" src="https://github.com/user-attachments/assets/85384bbc-6ea4-4235-9168-d3f8b289fdb4" />
+<img width="1483" height="834" alt="Dashboard Screenshot" src="https://github.com/user-attachments/assets/0625f37c-ea90-4055-8e37-05bbd3ee58bb" />
 
 ## Bereich 1: Header & Filter
 Ganz oben befinden sich die globalen Steuerelemente:
