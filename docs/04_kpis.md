@@ -36,7 +36,7 @@ Distanz (km) = SUM('fact_Training'[Distanz (in km)])
 
 **Trainingseinheiten:** Zählt die Anzahl der einzigartigen Trainings-IDs (nutzt `DISTINCTCOUNT`, um jede Trainingseinheit nur einmal zu zählen)
 ```dax
-Trainingseinheiten = DISTINCTCOUNT( fact_Training[Id])
+Trainingseinheiten = DISTINCTCOUNT( fact_Training[ID] )
 ```
 
 **Ø kmh:** Berechnet die Durchschnittsgeschwindigkeit. Nutzt DIVIDE zur sicheren Division (vermeidet Fehler bei Division durch Null).

@@ -15,37 +15,6 @@
         "lineageTag": "a3959c32-04ee-4f09-bb01-276d27ba2535",
         "columns": [
           {
-            "name": "Datum",
-            "dataType": "dateTime",
-            "sourceColumn": "Datum",
-            "formatString": "Short Date",
-            "lineageTag": "fef6012e-e53a-4041-bba2-73d15f9bd124",
-            "summarizeBy": "none",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              },
-              {
-                "name": "UnderlyingDateTimeDataType",
-                "value": "Date"
-              }
-            ]
-          },
-          {
-            "name": "Trainingsart",
-            "dataType": "string",
-            "sourceColumn": "Trainingsart",
-            "lineageTag": "f5f8b2c9-4628-4d08-a48d-61e9e0805086",
-            "summarizeBy": "none",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ]
-          },
-          {
             "name": "Dauer (in Minuten)",
             "dataType": "int64",
             "sourceColumn": "Dauer (in Minuten)",
@@ -61,7 +30,7 @@
           },
           {
             "name": "Distanz (in km)",
-            "dataType": "int64",
+            "dataType": "double",
             "sourceColumn": "Distanz (in km)",
             "formatString": "0",
             "lineageTag": "d5698842-cc62-45d4-9bee-6bc30f257185",
@@ -106,11 +75,39 @@
             "sourceColumn": "Id",
             "formatString": "0",
             "lineageTag": "199bf98a-5c08-4779-80c7-21267745c148",
-            "summarizeBy": "count",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ]
+          },
+          {
+            "name": "TrainingArt_Key",
+            "dataType": "int64",
+            "sourceColumn": "TrainingArt_Key",
+            "formatString": "0",
+            "lineageTag": "fc04fdd3-6b9e-4fc6-b934-93b10b4e1752",
+            "summarizeBy": "none",
             "annotations": [
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Datum Nr",
+            "dataType": "int64",
+            "sourceColumn": "Datum Nr",
+            "formatString": "0",
+            "lineageTag": "0d0b338d-8459-4b1b-92c7-5ba9866a188c",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
               }
             ]
           }
@@ -123,23 +120,23 @@
               "type": "m",
               "expression": [
                 "let",
-                "    // 1. Zugriff auf die lokale Datei (Pfad ist benutzerspezifisch!)",
-                "    Quelle = Excel.Workbook(File.Contents(\"C:\\Users\\andre\\OneDrive\\Trainingseintrag.xlsx\"), null, true),",
+                "    // 1. Zugriff auf die aufbereitete Staging-Tabelle (Ihre bereinigte Quelle)",
+                "    Quelle = source_Training,",
                 "",
-                "    // 2. Navigation zur strukturierten Tabelle aus Forms",
-                "    Tabelle1_Table = Quelle{[Item=\"OfficeForms.Table\",Kind=\"Table\"]}[Data],",
-                "    #\"Ersetzter Wert\" = Table.ReplaceValue(Tabelle1_Table,\",\",\".\",Replacer.ReplaceText,{\"Distanz (in km)\"}),",
+                "    // 2. Lookup der Trainingsart-ID: ",
+                "    // Wir verknüpfen die Fakten mit der Dimension \"dim_Trainingsarten\", um den numerischen Schlüssel zu erhalten.",
+                "    #\"Zusammengeführte Abfragen\" = Table.NestedJoin(Quelle, {\"Trainingsart\"}, dim_Trainingsarten, {\"Trainingsart\"}, \"dim_Trainingsarten\", JoinKind.LeftOuter),",
                 "",
-                "    // 3. Datentypen sauber definieren (Text vs. Zahl vs. Datum)",
-                "    #\"Geänderter Typ\" = Table.TransformColumnTypes(#\"Ersetzter Wert\",{{\"Id\", Int64.Type}, {\"Startzeit\", type datetime}, {\"Fertigstellungszeit\", type datetime}, {\"E-Mail\", type text}, {\"Name\", type any}, {\"Wann war das Training?\", type date}, {\"Was hast du gemacht?\", type text}, {\"Dauer (in Minuten)\", Int64.Type}, {\"Distanz (in km)\", Int64.Type}, {\"Durchschnitts-Puls\", Int64.Type}, {\"Beschreibung / Notizen\", type text}}),",
-                "    ",
-                "    // 4. Cleanup: Technische Forms-Spalten entfernen (Datenschutz & Speicher)",
-                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Geänderter Typ\",{\"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\"}),",
-                "    ",
-                "    // 5. Umbenennung für das Sternschema",
-                "    #\"Umbenannte Spalten\" = Table.RenameColumns(#\"Entfernte Spalten\",{{\"Was hast du gemacht?\", \"Trainingsart\"}, {\"Wann war das Training?\", \"Datum\"}})",
+                "    // 3. Extraktion des Schlüssels: ",
+                "    // Nur die Spalte \"TrainingArt_Key\" wird aus der Dimensionstabelle übernommen.",
+                "    #\"Erweiterte dim_Trainingsarten\" = Table.ExpandTableColumn(#\"Zusammengeführte Abfragen\", \"dim_Trainingsarten\", {\"TrainingArt_Key\"}, {\"TrainingArt_Key\"}),",
+                "",
+                "    // 4. Bereinigung der Faktentabelle: ",
+                "    // Wir entfernen Metadaten (E-Mail, Name) und die ursprünglichen Textfelder.",
+                "    // Das Feld \"Datum\" wird hier entfernt, da wir bereits die \"Datum Nr\" (DateKey) für die Relation zur Zeit-Dimension haben.",
+                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Erweiterte dim_Trainingsarten\",{\"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\", \"Trainingsart\", \"Datum\"})",
                 "in",
-                "    #\"Umbenannte Spalten\""
+                "    #\"Entfernte Spalten\""
               ]
             }
           }
@@ -161,23 +158,6 @@
         "columns": [
           {
             "type": "calculatedTableColumn",
-            "name": "Date",
-            "dataType": "dateTime",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[Date]",
-            "formatString": "General Date",
-            "lineageTag": "ba9498a1-fbb1-44e2-96f6-69cb878aa6db",
-            "summarizeBy": "none",
-            "annotations": [
-              {
-                "name": "SummarizationSetBy",
-                "value": "Automatic"
-              }
-            ]
-          },
-          {
-            "type": "calculatedTableColumn",
             "name": "Jahr",
             "dataType": "int64",
             "isNameInferred": true,
@@ -189,7 +169,7 @@
             "annotations": [
               {
                 "name": "SummarizationSetBy",
-                "value": "Automatic"
+                "value": "User"
               }
             ]
           },
@@ -222,7 +202,7 @@
             "annotations": [
               {
                 "name": "SummarizationSetBy",
-                "value": "Automatic"
+                "value": "User"
               }
             ]
           },
@@ -257,6 +237,40 @@
                 "value": "Automatic"
               }
             ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Datum Nr",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Datum Nr]",
+            "formatString": "0",
+            "lineageTag": "fa808b6a-a106-48e2-b838-8024d9b68005",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Datum",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Datum]",
+            "formatString": "Short Date",
+            "lineageTag": "18e2dc65-0f05-4d85-b17d-a8b374111236",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
           }
         ],
         "partitions": [
@@ -267,13 +281,30 @@
               "type": "calculated",
               "expression": [
                 "",
-                "ADDCOLUMNS (",
-                "    CALENDAR (DATE(2025,1,1), DATE(2026,12,31)),",
-                "    \"Jahr\", YEAR([Date]),",
-                "    \"Monat\", FORMAT([Date], \"mmmm\"),",
-                "    \"Kalenderwoche\", WEEKNUM([Date], 2), -- 2 ist Standard, 21 ist ISO-8601 Normiert",
-                "    \"JahrWoche\", FORMAT([Date], \"yyyy\") & \"-\" & FORMAT(WEEKNUM([Date], 21), \"00\"),",
-                "    \"Wochentag\", FORMAT([Date], \"dddd\")",
+                "VAR StartDatum = DATE(2025, 1, 1)",
+                "VAR EndDatum = DATE(2026, 12, 31)",
+                "-- Erzeugt die Basistabelle mit der Standardspalte [Date]",
+                "VAR BasisKalender = CALENDAR(StartDatum, EndDatum)",
+                "",
+                "RETURN",
+                "SELECTCOLUMNS (",
+                "    ADDCOLUMNS (",
+                "        BasisKalender,",
+                "        \"Datum Nr\", YEAR([Date]) * 10000 + MONTH([Date]) * 100 + DAY([Date]),",
+                "        \"Jahr\", YEAR([Date]),",
+                "        \"Monat\", FORMAT([Date], \"mmmm\"),",
+                "        \"Kalenderwoche\", WEEKNUM([Date], 2),",
+                "        \"JahrWoche\", FORMAT([Date], \"yyyy\") & \"-\" & FORMAT(WEEKNUM([Date], 21), \"00\"),",
+                "        \"Wochentag\", FORMAT([Date], \"dddd\")",
+                "    ),",
+                "    -- Hier definieren wir die Namen der Spalten für die fertige Tabelle",
+                "    \"Datum\", [Date], ",
+                "    \"Datum Nr\", [Datum Nr],",
+                "    \"Jahr\", [Jahr],",
+                "    \"Monat\", [Monat],",
+                "    \"Kalenderwoche\", [Kalenderwoche],",
+                "    \"JahrWoche\", [JahrWoche],",
+                "    \"Wochentag\", [Wochentag]",
                 ")"
               ]
             }
@@ -297,15 +328,20 @@
               "type": "m",
               "expression": [
                 "let",
-                "    // Erzeugt eine leere Tabelle aus einem Base64-String (Das ist der Standard-Code für \"Daten eingeben\")",
+                "    // 1. Erzeugt eine leere Tabelle aus einem Base64-String (Das ist der Standard-Code für \"Daten eingeben\")",
                 "    // \"i44FAA==\" ist der kodierte Wert für eine leere Zelle/Tabelle.",
                 "    Quelle = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i44FAA==\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#\"Spalte \"\"1\"\"\" = _t]),",
                 "    ",
-                "    // Setzt den Datentyp der (leeren) Spalte auf Text, damit Power BI damit arbeiten kann",
+                "    // 2. Setzt den Datentyp der (leeren) Spalte auf Text, damit Power BI damit arbeiten kann",
                 "    #\"Geänderter Typ\" = Table.TransformColumnTypes(Quelle,{{\"Spalte \"\"1\"\"\", type text}}),",
+                "",
+                "    // 3. Spalte entfernen",
+                "    // Wir löschen die automatisch erstellte Hilfsspalte \"Spalte 1\".",
+                "    // Zurück bleibt eine Tabelle ohne Spalten – die perfekte \"Hülle\" für Measures.",
                 "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Geänderter Typ\",{\"Spalte \"\"1\"\"\"})",
                 "in",
-                "    // Gibt die leere Tabelle zurück, die wir als Container für Measures nutzen",
+                "    // 4. Gibt die leere Tabelle zurück, die wir als Container für Measures nutzen",
+                "    // Nach dem Laden in Power BI können Sie hier alle Kennzahlen (z.B. Summe Dauer) ablegen.",
                 "    #\"Entfernte Spalten\""
               ]
             }
@@ -376,6 +412,20 @@
                 "value": "Automatic"
               }
             ]
+          },
+          {
+            "name": "TrainingArt_Key",
+            "dataType": "int64",
+            "sourceColumn": "TrainingArt_Key",
+            "formatString": "0",
+            "lineageTag": "780d5614-5bc0-42ea-bd43-fee3c309857f",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
           }
         ],
         "partitions": [
@@ -387,22 +437,340 @@
               "expression": [
                 "let",
                 "    // 1. Bezug auf die Faktentabelle nehmen",
-                "    // Wir laden die bereits existierende Tabelle \"fact_Training\" als Quelle.",
-                "    Quelle = fact_Training,",
+                "    // Wir laden die bereits existierende Tabelle \"source_Training\" als Quelle.",
+                "    Quelle = source_Training,",
                 "",
                 "    // 2. Spaltenauswahl",
                 "    // Wir behalten nur die Spalte \"Trainingsart\" und entfernen alle anderen (Datum, Dauer etc.).",
-                "    // Das macht die Tabelle sehr schmal und performant.",
+                "    // Diese Spalte basiert auf dem Feld \"Was hast du gemacht?\" aus Ihren Quelldaten.",
                 "    #\"Andere entfernte Spalten\" = Table.SelectColumns(Quelle,{\"Trainingsart\"}),",
                 "    ",
                 "    // 3. Duplikate entfernen",
-                "    // Wir wollen jede Sportart (z.B. \"Laufen\") nur genau einmal in der Liste haben.",
-                "    // Das Ergebnis ist eine eindeutige Liste aller Sportarten für Filterzwecke.",
-                "    #\"Entfernte Duplikate\" = Table.Distinct(#\"Andere entfernte Spalten\")",
+                "    // Wir wollen jede Sportart (wie z.B. \"Schwimmen\", \"Radfahren\", \"Laufen\" oder \"Krafttraining\") nur genau einmal in der Liste haben.",
+                "    // Das Ergebnis ist eine eindeutige Liste aller Sportarten, die als Filter im Sternschema dient.",
+                "    #\"Entfernte Duplikate\" = Table.Distinct(#\"Andere entfernte Spalten\"),",
+                "",
+                "    // 4. Indexspalte als Schlüssel (Surrogate Key) hinzufügen",
+                "    // Wir erstellen einen numerischen Primärschlüssel (Ganzzahl), der für die Verknüpfung im Modell genutzt wird.",
+                "    // Dieser Schlüssel (z. B. 1 für Schwimmen, 2 für Radfahren) optimiert die Performance gegenüber Text-Verknüpfungen.",
+                "    #\"Hinzugefügter Index\" = Table.AddIndexColumn(#\"Entfernte Duplikate\", \"TrainingArt_Key\", 1, 1, Int64.Type)",
+                "",
                 "in",
-                "    #\"Entfernte Duplikate\""
+                "    // Rückgabe der fertigen Dimensionstabelle \"dim_Trainingsarten\"",
+                "    #\"Hinzugefügter Index\""
               ]
             }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ]
+      },
+      {
+        "name": "source_Training",
+        "isHidden": true,
+        "lineageTag": "8621b4b3-dd84-41f0-b9a8-42632d93913a",
+        "columns": [
+          {
+            "name": "Id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Id",
+            "formatString": "0",
+            "lineageTag": "c77da1b6-3cb9-458f-881d-c1fc0799afe6",
+            "summarizeBy": "count",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Startzeit",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "Startzeit",
+            "formatString": "General Date",
+            "lineageTag": "3adac929-75ad-4992-800d-5eebf4049209",
+            "summarizeBy": "none",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Fertigstellungszeit",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "Fertigstellungszeit",
+            "formatString": "General Date",
+            "lineageTag": "7ab7eb31-c95a-466d-9a47-740df66636b1",
+            "summarizeBy": "none",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "E-Mail",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "E-Mail",
+            "lineageTag": "4e3d6411-9846-4e8d-90fb-91aa5497c2fb",
+            "summarizeBy": "none",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Name",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "Name",
+            "lineageTag": "d3401e2e-9937-43ab-b54a-b20299d6acc2",
+            "summarizeBy": "none",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Datum",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "Datum",
+            "formatString": "General Date",
+            "lineageTag": "44df8e05-a863-4d9e-802e-5124c21e6411",
+            "summarizeBy": "none",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Trainingsart",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "Trainingsart",
+            "lineageTag": "a9b40c28-2f9b-4ea0-8df7-63d6443a7d57",
+            "summarizeBy": "none",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Dauer (in Minuten)",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Dauer (in Minuten)",
+            "formatString": "0",
+            "lineageTag": "8b43bf83-760c-4468-ba24-86cbf948c3d8",
+            "summarizeBy": "sum",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Distanz (in km)",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "Distanz (in km)",
+            "lineageTag": "897efc11-011f-4838-92c2-5b94ce24f977",
+            "summarizeBy": "sum",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ]
+          },
+          {
+            "name": "Durchschnitts-Puls",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Durchschnitts-Puls",
+            "formatString": "0",
+            "lineageTag": "73e5d015-5be4-4e25-86a1-d64bf2e0cddc",
+            "summarizeBy": "sum",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Beschreibung / Notizen",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "Beschreibung / Notizen",
+            "lineageTag": "b21aa941-f3cc-437a-9c04-99c5dedbce8e",
+            "summarizeBy": "none",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Datum Nr",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Datum Nr",
+            "formatString": "0",
+            "lineageTag": "f8ad71fb-be66-4eb3-b36d-1e48d573b195",
+            "summarizeBy": "sum",
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "source_Training",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    // 1. Zugriff auf die lokale Datei (Pfad ist benutzerspezifisch!)",
+                "    Quelle = Excel.Workbook(File.Contents(\"C:\\Users\\andre\\OneDrive\\Trainingseintrag.xlsx\"), null, true),",
+                "",
+                "    // 2. Navigation zur strukturierten Tabelle aus Forms",
+                "    Tabelle1_Table = Quelle{[Item=\"OfficeForms.Table\",Kind=\"Table\"]}[Data],",
+                "",
+                "    // 3. Bereinigung der Dezimaltrennzeichen: Komma durch Punkt ersetzen, ",
+                "    // um die Spalte \"Distanz (in km)\" korrekt in eine Zahl umwandeln zu können",
+                "    #\"Ersetzter Wert\" = Table.ReplaceValue(Tabelle1_Table,\",\",\".\",Replacer.ReplaceText,{\"Distanz (in km)\"}),",
+                "",
+                "    // 4. Spalten umbenennen: \"Was hast du gemacht?\" wird zu \"Trainingsart\" und ",
+                "    // \"Wann war das Training?\" zu \"Datum\", um das Modell lesbarer zu machen",
+                "    #\"Umbenannte Spalten\" = Table.RenameColumns(#\"Ersetzter Wert\",{{\"Was hast du gemacht?\", \"Trainingsart\"}, {\"Wann war das Training?\", \"Datum\"}}),",
+                "",
+                "    // 5. Erstellung des Integers-Schlüssels (DateKey): ",
+                "    // Berechnung eines YYYYMMDD Wertes aus dem Datum für die performante Relation zur Kalendertabelle",
+                "    #\"Hinzugefügte benutzerdefinierte Spalte\" = Table.AddColumn(#\"Umbenannte Spalten\", \"Datum Nr\", each Date.Year([Datum]) * 10000 + ",
+                "    Date.Month([Datum]) * 100 + ",
+                "    Date.Day([Datum])),",
+                "",
+                "    // 6. Typkonvertierung: Festlegung der Datentypen für alle Spalten, ",
+                "    // insbesondere Ganzzahlen für ID/Dauer/Puls und Dezimalzahlen für die Distanz",
+                "    #\"Geänderter Typ\" = Table.TransformColumnTypes(#\"Hinzugefügte benutzerdefinierte Spalte\",{",
+                "        {\"Startzeit\", type datetime}, ",
+                "        {\"Fertigstellungszeit\", type datetime}, ",
+                "        {\"Datum\", type datetime}, ",
+                "        {\"Id\", Int64.Type}, ",
+                "        {\"E-Mail\", type text}, ",
+                "        {\"Name\", type text}, ",
+                "        {\"Trainingsart\", type text}, ",
+                "        {\"Dauer (in Minuten)\", Int64.Type}, ",
+                "        {\"Distanz (in km)\", type number}, ",
+                "        {\"Durchschnitts-Puls\", Int64.Type}, ",
+                "        {\"Beschreibung / Notizen\", type text}, ",
+                "        {\"Datum Nr\", Int64.Type}",
+                "    })",
+                "in",
+                "    #\"Geänderter Typ\""
+              ]
+            }
+          }
+        ],
+        "changedProperties": [
+          {
+            "property": "IsHidden"
           }
         ],
         "annotations": [
@@ -419,18 +787,18 @@
     ],
     "relationships": [
       {
-        "name": "AutoDetected_a830844c-ca4f-41e6-b7c0-8850323690d4",
+        "name": "11aa3ab2-69ff-4dac-6780-5c0ded0f9bb9",
         "fromTable": "fact_Training",
-        "fromColumn": "Trainingsart",
+        "fromColumn": "TrainingArt_Key",
         "toTable": "dim_Trainingsarten",
-        "toColumn": "Trainingsart"
+        "toColumn": "TrainingArt_Key"
       },
       {
-        "name": "ef0b1418-47a3-8b79-adb1-68112e321c7c",
+        "name": "a99c32cb-a3e7-e8c0-37b0-127ef824a9ca",
         "fromTable": "fact_Training",
-        "fromColumn": "Datum",
+        "fromColumn": "Datum Nr",
         "toTable": "dim_Kalender",
-        "toColumn": "Date"
+        "toColumn": "Datum Nr"
       }
     ],
     "cultures": [
@@ -452,7 +820,7 @@
       },
       {
         "name": "PBI_QueryOrder",
-        "value": "[\"_Kennzahlen\",\"fact_Training\",\"dim_Trainingsarten\"]"
+        "value": "[\"_Kennzahlen\",\"source_Training\",\"fact_Training\",\"dim_Trainingsarten\"]"
       },
       {
         "name": "TabularEditor_SerializeOptions",
