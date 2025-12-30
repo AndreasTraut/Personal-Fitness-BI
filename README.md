@@ -26,7 +26,7 @@ Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gle
 * **Effizienz-Metriken:** Berechnung des "Efficiency Index" (Verhältnis von Geschwindigkeit zu Herzfrequenz) zur objektiven Fitnessbewertung.
 * **Split-Screen Dashboard:** Übersichtliches Layout mit Trennung zwischen Detail-Daten (Matrix) und visuellen Trends (Diagramme).
 
-![Dashboard Screenshot](https://github.com/user-attachments/assets/7669da89-cf65-486f-a2ac-c796afebad28)
+![Dashboard Screenshot](https://github.com/user-attachments/assets/9372b27f-e062-45a1-af14-8eb2dcf6991a)
 
 ## ⚙️ Architektur & Workflow
 

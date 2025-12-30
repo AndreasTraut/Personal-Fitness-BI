@@ -4,6 +4,11 @@ Das Dashboard ist in ein übersichtliches **Split-Layout** unterteilt: Auf der l
 
 <img width="1483" height="834" alt="Dashboard Screenshot" src="https://github.com/user-attachments/assets/0625f37c-ea90-4055-8e37-05bbd3ee58bb" />
 
+Mit dem Filter "Trainingsart" können auch verschiedene Trainingsarten (hier Radfahren und Laufen) individuell analysiert werden:
+
+<img width="1220" height="683" alt="Dashboard Screenshot mit Filter" src="https://github.com/user-attachments/assets/77b7b441-8330-40c4-b8a8-88254ead121a" />
+
+
 ## Bereich 1: Header & Filter
 Ganz oben befinden sich die globalen Steuerelemente:
 * **Titel:** "Personal Fitness BI"
