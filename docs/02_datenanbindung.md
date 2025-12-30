@@ -5,7 +5,7 @@ Diese Anleitung beschreibt die **lokale Verbindung** zur Datenquelle. Dies ist d
 ## 1. Das Prinzip (Local File)
 Anstatt dass Power BI versucht, sich über das Internet in dein OneDrive einzuloggen, nutzen wir den **OneDrive-Synchronisierungs-Client** auf deinem PC.
 
-* **Voraussetzung:** OneDrive läuft auf deinem PC und die Datei `Fitness.xlsx` ist lokal synchronisiert.
+* **Voraussetzung:** OneDrive läuft auf deinem PC und die Datei `Trainingseintrag.xlsx` ist lokal synchronisiert.
 * **Vorteil:** Extrem stabil, keine URL-Manipulation nötig, schnellerer Import.
 * **Nachteil:** Aktualisierung funktioniert nur, wenn dein PC läuft und OneDrive aktiv ist.
 
