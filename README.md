@@ -30,6 +30,8 @@ Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gle
 * **Effizienz-Metriken:** Berechnung des "Efficiency Index" (Verhältnis von Geschwindigkeit zu Herzfrequenz) zur objektiven Fitnessbewertung.
 * **Split-Screen Dashboard:** Übersichtliches Layout mit Trennung zwischen Detail-Daten (Matrix) und visuellen Trends (Diagramme).
 
+---
+
 ## ⚙️ Architektur & Workflow
 
 Der Datenfluss ist vollständig automatisiert ("Low-Code ETL"):
