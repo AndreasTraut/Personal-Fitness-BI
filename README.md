@@ -32,8 +32,12 @@ Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gle
 
 Der Datenfluss ist vollständig automatisiert ("Low-Code ETL"):
 
+<table>
+<tr>
+<td width="50%">
+
 ```mermaid
-graph LR
+graph TD
     User[📱 User / Smartphone] -->|Eingabe| Forms[📝 MS Forms]
     Forms -->|Sync| Excel[☁️ Excel auf OneDrive]
     Excel -->|Sync| Local[💻 Lokaler PC]
@@ -41,10 +45,17 @@ graph LR
     PBI -->|Visualisierung| Dash[📈 Dashboard & Reports]
 ```
 
+</td>
+<td width="50%">
+
 1.  **Input:** User trägt Training in Forms ein (via Smartphone-Link).
 2.  **Storage:** Forms speichert Daten automatisch in einer Excel-Tabelle auf OneDrive.
 3.  **Processing:** Power BI lädt die Daten über den lokalen OneDrive-Sync (stabilste Methode für private Accounts).
 4.  **Output:** Interaktive Dashboards mit Drill-Down-Funktionen.
+
+</td>
+</tr>
+</table>
 
 ---
 
