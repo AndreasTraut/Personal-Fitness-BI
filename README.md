@@ -91,10 +91,10 @@ Alle KI‑Outputs wurden manuell geprüft und bei Bedarf angepasst. Die genannte
 
 
 - **Definition der Eingabedaten & Feldtypen (Forms):** Entwurfsentscheidungen und Validierungsregeln mithilfe von Google Gemini erarbeitet.
-- **Erstellung des Microsoft Forms‑Formulars:** Automatisierte Anlage und Konfiguration über Microsoft Copilot, anschließend überprüft. Siehe: [Einrichtung & Setup](docs/01_setup_forms.md).
-- **Dokumentation des Stern‑Datenmodells (Mermaid):** Diagramme und textliche Beschreibungen mit Unterstützung von Google Gemini erstellt; [Mermaid](https://mermaid-js.github.io/mermaid/#/) für Diagramme. Siehe: [Datenmodellierung](docs/03_datenmodell.md).
-- **DAX‑Measures:** Entwurf, Formulierung und Variantenprüfung der Measures mit Google Gemini. Referenz: [KPIs & Logik](docs/04_kpis.md).
-- **Markdown‑Dokumentation:** Textentwürfe und Überarbeitungen mit Google Gemini und GitHub Copilot erstellt und verfeinert. Siehe die `docs/`-Ordnerinhalte.
+- **Erstellung des Microsoft Forms‑Formulars:** Automatisierte Anlage und Konfiguration über Microsoft Copilot, anschließend überprüft. 
+- **Dokumentation des Stern‑Datenmodells (Mermaid):** Diagramme, textliche Beschreibungen und [Mermaid](https://mermaid-js.github.io/mermaid/#/) für Diagramme mit Unterstützung von Google Gemini und GitHub Copilot erstellt. 
+- **DAX‑Measures:** Entwurf, Formulierung und Variantenprüfung der Measures mit Google Gemini.
+- **Markdown‑Dokumentation:** Textentwürfe und Überarbeitungen mit Google Gemini und GitHub Copilot erstellt und verfeinert. 
 - **Commit‑Nachrichten / Git‑Workflow:** Vorschläge für aussagekräftige Commit‑Messages mithilfe von GitHub Copilot.
 
 ---
