@@ -4,6 +4,8 @@
 
 Was man nicht misst, kann man nicht managen. Dieses Projekt ist eine vollständige End-to-End Business Intelligence Lösung, die manuelle Excel-Listen und intransparente Fitness-Apps durch einen automatisierten, professionellen Workflow ersetzt. Von der mobilen Datenerfassung (Microsoft Forms) über Cloud-Synchronisierung bis zum interaktiven Power BI Dashboard – alles läuft vollautomatisch im Hintergrund, während du dich auf dein Training konzentrierst.
 
+![Dashboard Screenshot](https://github.com/user-attachments/assets/9372b27f-e062-45a1-af14-8eb2dcf6991a)
+
 ## Über den Autor
 
 **Andreas Traut** ist ein Senior BI-Entwickler, der sich auf Data Warehousing, SQL Server und Microsoft BI Stack spezialisiert hat.
@@ -18,6 +20,8 @@ Was man nicht misst, kann man nicht managen. Dieses Projekt ist eine vollständi
 
 Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gleichzeitig professionelle Analysen zu ermöglichen. Anstatt Trainingsdaten mühsam am PC einzutippen, nutzt dieses System eine mobile "App" (MS Forms), die Daten in die Cloud synchronisiert. Power BI greift diese Daten ab, transformiert sie in ein professionelles Sternschema und visualisiert die Ergebnisse.
 
+<img width="1483" height="834" alt="Dashboard Screenshot" src="https://github.com/user-attachments/assets/0625f37c-ea90-4055-8e37-05bbd3ee58bb" />
+
 ### Highlights & Features
 
 * **Mobile-First Datenerfassung:** Eingabe von Dauer, Distanz und Herzfrequenz in < 30 Sekunden via Microsoft Forms.
@@ -25,8 +29,6 @@ Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gle
 * **Automatisierte ETL-Strecke:** Power Query bereinigt technische Forms-Daten automatisch und konvertiert Minuten in Stunden.
 * **Effizienz-Metriken:** Berechnung des "Efficiency Index" (Verhältnis von Geschwindigkeit zu Herzfrequenz) zur objektiven Fitnessbewertung.
 * **Split-Screen Dashboard:** Übersichtliches Layout mit Trennung zwischen Detail-Daten (Matrix) und visuellen Trends (Diagramme).
-
-![Dashboard Screenshot](https://github.com/user-attachments/assets/9372b27f-e062-45a1-af14-8eb2dcf6991a)
 
 ## ⚙️ Architektur & Workflow
 
