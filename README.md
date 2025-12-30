@@ -1,8 +1,8 @@
 # 🏃‍♂️ Personal Fitness BI
 
-**Automatisierte Fitness-Analyse: Von der mobilen Eingabe bis zum Dashboard.**
+**Von der Hantel direkt ins Dashboard – Fitness datengetrieben erreichen.**
 
-Eine vollständige End-to-End Business Intelligence Lösung für persönliches Fitnesstracking. Dieses Projekt ersetzt manuelle Excel-Listen durch einen automatisierten Workflow mit Microsoft Forms, Excel Online und Power BI.
+Was man nicht misst, kann man nicht managen. Dieses Projekt ist eine vollständige End-to-End Business Intelligence Lösung, die manuelle Excel-Listen und intransparente Fitness-Apps durch einen automatisierten, professionellen Workflow ersetzt. Von der mobilen Datenerfassung (Microsoft Forms) über Cloud-Synchronisierung bis zum interaktiven Power BI Dashboard – alles läuft vollautomatisch im Hintergrund, während du dich auf dein Training konzentrierst.
 
 ## Über den Autor
 
