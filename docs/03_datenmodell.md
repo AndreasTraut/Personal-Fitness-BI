@@ -70,9 +70,7 @@ in
 ```
 
 ### 2. Tabelle "dim_Kalender" (Dimension)
-Wird mittels DAX erstellt, um eine stetige Zeitachse vom 01.01.2025 bis 31.12.2026 zu garantieren (auch an Tagen ohne Sport).
-
-**Wichtig:** Ermöglicht die korrekte Sortierung von Wochen (KW 1, KW 2...).
+Wird mittels DAX erstellt, um eine stetige Zeitachse vom 01.01.2025 bis 31.12.2026 zu garantieren (auch an Tagen ohne Sport). Die Tabelle ermöglicht die korrekte Sortierung von Wochen (KW 1, KW 2...) und die Spalte `Datum` ist als **Datumsspalte** markiert ("Mark as Date Table"), um Time-Intelligence-Funktionen in DAX zu ermöglichen.
 
 **DAX-Code für Kalender:**
 

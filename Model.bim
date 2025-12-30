@@ -155,6 +155,7 @@
       {
         "name": "dim_Kalender",
         "lineageTag": "f0f51e87-8a7c-4716-93eb-cb7a77293687",
+        "dataCategory": "Time",
         "columns": [
           {
             "type": "calculatedTableColumn",
@@ -261,6 +262,7 @@
             "dataType": "dateTime",
             "isNameInferred": true,
             "isDataTypeInferred": true,
+            "isKey": true,
             "sourceColumn": "[Datum]",
             "formatString": "Short Date",
             "lineageTag": "18e2dc65-0f05-4d85-b17d-a8b374111236",
