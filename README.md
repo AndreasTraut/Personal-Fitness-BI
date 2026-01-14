@@ -25,6 +25,7 @@ Ziel dieses Projekts ist es, die Hürde der Datenerfassung zu minimieren und gle
 * **Automatisierte ETL-Strecke:** Power Query bereinigt technische Forms-Daten automatisch und konvertiert Minuten in Stunden.
 * **Effizienz-Metriken:** Berechnung des "Efficiency Index" (Verhältnis von Geschwindigkeit zu Herzfrequenz) zur objektiven Fitnessbewertung.
 * **Split-Screen Dashboard:** Übersichtliches Layout mit Trennung zwischen Detail-Daten (Matrix) und visuellen Trends (Diagramme).
+* **Update v1.1 (Python Integration):** Nutzung von Python innerhalb von Power Query zur Simulation fehlender Daten (Mocking) und Berechnung komplexer Metriken (1RM). 👉 [Siehe Dokumentation](docs/06_python_integration.md)
 
 ![Dashboard Screenshot](https://github.com/user-attachments/assets/9372b27f-e062-45a1-af14-8eb2dcf6991a)
 
@@ -56,6 +57,17 @@ graph TD
 </td>
 </tr>
 </table>
+
+---
+
+## 🚀 Update v1.1: Python Integration
+Power BI ist mächtig, aber für Data Science Workflows ist Python oft überlegen. Ich habe den Stack erweitert:
+
+* **Hybrid ETL:** Power Query für Standard-Bereinigungen, Python (Pandas) für komplexe Logik.
+* **Synthetic Data Injection:** Das Template enthält ein Python-Skript, das fehlende Krafttrainings-Daten (Gewicht/Wiederholungen) intelligent simuliert. So kannst du das Dashboard sofort mit "Leben" testen, auch wenn deine Excel-Tabelle noch leer ist.
+* **Advanced Metrics:** Automatische Berechnung des **One Rep Max (1RM)** via Python-Skript.
+
+👉 [Lies die Dokumentation zur Python-Integration](docs/06_python_integration.md)
 
 ---
 

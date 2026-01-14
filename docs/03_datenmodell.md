@@ -31,14 +31,17 @@ erDiagram
         string Trainingsart "Eindeutige Liste"
     }
 
-    fact_Training {
+fact_Training {
         int64 Id PK
         int64 Datum_Nr FK
         int64 TrainingArt_Key FK
         int64 Dauer_Minuten "Dauer (in Minuten)"
         double Distanz_km "Distanz (in km)"
-        int64 Durchschnitts_Puls "Durchschnitts-Puls"
-        string Beschreibung_Notizen "Beschreibung / Notizen"
+        int64 Durchschnitts_Puls
+        string Beschreibung
+        double Weight "Gewicht (Python)"
+        int64 Reps "Wiederholungen (Python)"
+        double Estimated_1RM "Maxkraft (Python)"
     }
 ```
 ## Die Tabellen
@@ -50,23 +53,33 @@ Enthält die bereinigten Messwerte mit numerischen Schlüsseln für performante 
 
 ```powerquery
 let
-    // 1. Zugriff auf die aufbereitete Staging-Tabelle (Ihre bereinigte Quelle)
+    // 1. Zugriff auf die aufbereitete Source
     Quelle = source_Training,
 
-    // 2. Lookup der Trainingsart-ID: 
-    // Wir verknüpfen die Fakten mit der Dimension "dim_Trainingsarten", um den numerischen Schlüssel zu erhalten.
+    // 2. Lookup der Trainingsart-ID
     #"Zusammengeführte Abfragen" = Table.NestedJoin(Quelle, {"Trainingsart"}, dim_Trainingsarten, {"Trainingsart"}, "dim_Trainingsarten", JoinKind.LeftOuter),
 
-    // 3. Extraktion des Schlüssels: 
-    // Nur die Spalte "TrainingArt_Key" wird aus der Dimensionstabelle übernommen.
+    // 3. Extraktion des Schlüssels
     #"Erweiterte dim_Trainingsarten" = Table.ExpandTableColumn(#"Zusammengeführte Abfragen", "dim_Trainingsarten", {"TrainingArt_Key"}, {"TrainingArt_Key"}),
 
-    // 4. Bereinigung der Faktentabelle: 
-    // Wir entfernen Metadaten (E-Mail, Name) und die ursprünglichen Textfelder.
-    // Das Feld "Datum" wird hier entfernt, da wir bereits die "Datum Nr" (DateKey) für die Relation zur Zeit-Dimension haben.
-    #"Entfernte Spalten" = Table.RemoveColumns(#"Erweiterte dim_Trainingsarten",{"Startzeit", "Fertigstellungszeit", "E-Mail", "Name", "Trainingsart", "Datum"})
+    // --- PYTHON EINSCHUB ---
+    // Wir führen das Skript aus, BEVOR wir die Text-Spalten löschen, damit Python darauf zugreifen kann.
+    
+    #"Python-Skript ausführen" = Python.Execute("# 'dataset' enthält die Eingabedaten#(lf)import pandas as pd#(lf)import numpy as np#(lf)#(lf)df = dataset.copy()#(lf)#(lf)# 1. Initialisierung#(lf)df['Weight'] = 0.0#(lf)df['Reps'] = 0#(lf)#(lf)# 2. Simulation (Mock Data)#(lf)# Wir prüfen auf den Key (4 = Krafttraining)#(lf)if 'TrainingArt_Key' in df.columns:#(lf)    is_kraft = df['TrainingArt_Key'] == 4#(lf)    count_kraft = is_kraft.sum()#(lf)#(lf)    if count_kraft > 0:#(lf)        # Zufallswerte generieren#(lf)        df.loc[is_kraft, 'Weight'] = np.random.randint(40, 80, size=count_kraft)#(lf)        df.loc[is_kraft, 'Reps'] = np.random.randint(5, 12, size=count_kraft)#(lf)#(lf)# 3. Berechnung 1RM (Epley Formel)#(lf)df['Estimated_1RM'] = df.apply(#(lf)    lambda row: row['Weight'] * (1 + row['Reps'] / 30) if row['Reps'] > 0 else 0,#(lf)    axis=1#(lf))#(lf)#(lf)df['Estimated_1RM'] = df['Estimated_1RM'].round(2)#(lf)#(lf)# Ausgabe#(lf)print(df)",[dataset=#"Erweiterte dim_Trainingsarten"]),
+
+    // Wir müssen die Tabelle, die Python zurückgibt ("Value"), wieder expandieren
+    #"Erweitertes Value" = Table.ExpandTableColumn(#"Python-Skript ausführen", "Value", {"TrainingArt_Key", "Datum Nr", "Dauer (in Minuten)", "Distanz (in km)", "Durchschnitts-Puls", "Weight", "Reps", "Estimated_1RM"}, {"TrainingArt_Key", "Datum Nr", "Dauer (in Minuten)", "Distanz (in km)", "Durchschnitts-Puls", "Weight", "Reps", "Estimated_1RM"}),
+
+    // --- ENDE PYTHON ---
+
+    // 4. Jetzt erst aufräumen!
+    // Wir brauchen "Trainingsart" etc. nicht mehr im Datenmodell.
+    #"Entfernte Spalten" = Table.RemoveColumns(#"Erweitertes Value",{"Trainingsart", "Startzeit", "Fertigstellungszeit", "E-Mail", "Name", "Datum"}),
+    
+    // Sicherheitshalber Typen setzen
+    #"Geänderter Typ" = Table.TransformColumnTypes(#"Entfernte Spalten",{{"Weight", type number}, {"Reps", Int64.Type}, {"Estimated_1RM", type number}})
 in
-    #"Entfernte Spalten"
+    #"Geänderter Typ"
 ```
 
 ### 2. Tabelle "dim_Kalender" (Dimension)

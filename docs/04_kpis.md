@@ -120,3 +120,20 @@ Effizienz = DIVIDE( [Ø kmh], AVERAGE('fact_Training'[Durchschnitts-Puls]), 0 )
 - Effizienz = 0.12 → Bei 150 bpm läuft man 18 km/h (= bessere Fitness)
 
 **Hinweis:** Dieses Measure ist ein vereinfachter Index und ersetzt keine medizinische Leistungsdiagnostik. Es dient der Trendbeobachtung.
+
+
+### 2.7 Kraftwerte (Strength Metrics)
+Dank der Python-Integration stehen nun auch Kraftwerte zur Verfügung.
+
+**Ø 1RM (kg)**
+Das durchschnittliche geschätzte Maximalgewicht über den gewählten Zeitraum.
+
+```dax
+Ø 1RM (kg) = AVERAGE('fact_Training'[Estimated_1RM])
+```
+
+**Max 1RM (kg)**
+Der absolute Rekordwert (Personal Best) im gewählten Zeitraum.
+```dax
+Max 1RM (kg) = MAX('fact_Training'[Estimated_1RM])
+```

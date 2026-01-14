@@ -5,7 +5,8 @@
     "culture": "de-CH",
     "dataAccessOptions": {
       "legacyRedirects": true,
-      "returnErrorValuesAsNull": true
+      "returnErrorValuesAsNull": true,
+      "fastCombine": true
     },
     "defaultPowerBIDataSourceVersion": "powerBI_V3",
     "sourceQueryCulture": "de-CH",
@@ -110,6 +111,48 @@
                 "value": "User"
               }
             ]
+          },
+          {
+            "name": "Weight",
+            "dataType": "int64",
+            "sourceColumn": "Weight",
+            "formatString": "0",
+            "lineageTag": "54e6dee1-430d-42fc-9bb7-93e702210925",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Reps",
+            "dataType": "int64",
+            "sourceColumn": "Reps",
+            "formatString": "0",
+            "lineageTag": "95b816e2-4966-4bbd-a579-e9293111a486",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "Estimated_1RM",
+            "dataType": "double",
+            "sourceColumn": "Estimated_1RM",
+            "formatString": "0",
+            "lineageTag": "da1ae09a-7d39-4623-a83d-8858cff25d7a",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
           }
         ],
         "partitions": [
@@ -120,23 +163,30 @@
               "type": "m",
               "expression": [
                 "let",
-                "    // 1. Zugriff auf die aufbereitete Staging-Tabelle (Ihre bereinigte Quelle)",
+                "    // 1. Zugriff auf die aufbereitete Staging-Tabelle",
                 "    Quelle = source_Training,",
                 "",
-                "    // 2. Lookup der Trainingsart-ID: ",
-                "    // Wir verknüpfen die Fakten mit der Dimension \"dim_Trainingsarten\", um den numerischen Schlüssel zu erhalten.",
+                "    // 2. Lookup der Trainingsart-ID",
                 "    #\"Zusammengeführte Abfragen\" = Table.NestedJoin(Quelle, {\"Trainingsart\"}, dim_Trainingsarten, {\"Trainingsart\"}, \"dim_Trainingsarten\", JoinKind.LeftOuter),",
                 "",
-                "    // 3. Extraktion des Schlüssels: ",
-                "    // Nur die Spalte \"TrainingArt_Key\" wird aus der Dimensionstabelle übernommen.",
+                "    // 3. Extraktion des Schlüssels",
                 "    #\"Erweiterte dim_Trainingsarten\" = Table.ExpandTableColumn(#\"Zusammengeführte Abfragen\", \"dim_Trainingsarten\", {\"TrainingArt_Key\"}, {\"TrainingArt_Key\"}),",
                 "",
-                "    // 4. Bereinigung der Faktentabelle: ",
-                "    // Wir entfernen Metadaten (E-Mail, Name) und die ursprünglichen Textfelder.",
-                "    // Das Feld \"Datum\" wird hier entfernt, da wir bereits die \"Datum Nr\" (DateKey) für die Relation zur Zeit-Dimension haben.",
-                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Erweiterte dim_Trainingsarten\",{\"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\", \"Trainingsart\", \"Datum\"})",
+                "    // 4. Bereinigung der Faktentabelle",
+                "    // HIER LÖSCHST DU \"Trainingsart\", daher darf Python danach nicht danach suchen!",
+                "    #\"Entfernte Spalten\" = Table.RemoveColumns(#\"Erweiterte dim_Trainingsarten\",{\"Startzeit\", \"Fertigstellungszeit\", \"E-Mail\", \"Name\", \"Trainingsart\", \"Datum\"}),",
+                "    ",
+                "    // 5. Python-Skript",
+                "    // Die If-Bedingung prüft jetzt auf 'TrainingArt_Key' statt 'Trainingsart'",
+                "    #\"Python-Skript ausführen\" = Python.Execute(\"# 'dataset' enthält die Eingabedaten#(lf)import pandas as pd#(lf)import numpy as np#(lf)#(lf)df = dataset.copy()#(lf)#(lf)# 1. Initialisierung#(lf)df['Weight'] = 0.0#(lf)df['Reps'] = 0#(lf)#(lf)# 2. Simulation (Mock Data)#(lf)# KORREKTUR: Wir prüfen, ob der Key da ist (nicht der Text)#(lf)if 'TrainingArt_Key' in df.columns:#(lf)    # 4 ist der Key für Krafttraining#(lf)    is_kraft = df['TrainingArt_Key'] == 4#(lf)    count_kraft = is_kraft.sum()#(lf)#(lf)    if count_kraft > 0:#(lf)        # Zufallswerte generieren#(lf)        df.loc[is_kraft, 'Weight'] = np.random.randint(40, 80, size=count_kraft)#(lf)        df.loc[is_kraft, 'Reps'] = np.random.randint(5, 12, size=count_kraft)#(lf)#(lf)# 3. Berechnung 1RM (Epley Formel)#(lf)df['Estimated_1RM'] = df.apply(#(lf)    lambda row: row['Weight'] * (1 + row['Reps'] / 30) if row['Reps'] > 0 else 0,#(lf)    axis=1#(lf))#(lf)#(lf)df['Estimated_1RM'] = df['Estimated_1RM'].round(2)#(lf)#(lf)# Ausgabe#(lf)print(df)\",[dataset=#\"Entfernte Spalten\"]),",
+                "    ",
+                "    // 6. Rückgabe aus Python verarbeiten",
+                "    df = #\"Python-Skript ausführen\"{[Name=\"df\"]}[Value],",
+                "    ",
+                "    // 7. Typen setzen",
+                "    #\"Geänderter Typ\" = Table.TransformColumnTypes(df,{{\"Id\", Int64.Type}, {\"Dauer (in Minuten)\", Int64.Type}, {\"Distanz (in km)\", type number}, {\"Durchschnitts-Puls\", Int64.Type}, {\"Beschreibung / Notizen\", type text}, {\"Datum Nr\", Int64.Type}, {\"TrainingArt_Key\", Int64.Type}, {\"Weight\", Int64.Type}, {\"Reps\", Int64.Type}, {\"Estimated_1RM\", type number}})",
                 "in",
-                "    #\"Entfernte Spalten\""
+                "    #\"Geänderter Typ\""
               ]
             }
           }
@@ -385,6 +435,28 @@
             "expression": "DIVIDE( SUM('fact_Training'[Durchschnitts-Puls]), [Trainingseinheiten], 0 )",
             "formatString": "0",
             "lineageTag": "d068b0b0-0b91-4090-995e-a419d9dfb633"
+          },
+          {
+            "name": "Ø 1RM (kg)",
+            "expression": [
+              "CALCULATE(",
+              "    AVERAGE(fact_Training[Estimated_1RM]),",
+              "    fact_Training[Estimated_1RM] > 0",
+              ")"
+            ],
+            "formatString": "0.00",
+            "lineageTag": "b8d20b50-9534-445e-b51b-e107ade94b02"
+          },
+          {
+            "name": "Max 1RM (kg)",
+            "expression": [
+              "CALCULATE(",
+              "    MAX(fact_Training[Estimated_1RM]),",
+              "    fact_Training[Estimated_1RM] > 0",
+              ")"
+            ],
+            "formatString": "0.0",
+            "lineageTag": "3c942e92-6e0a-483f-80a6-c40a9b9abcbf"
           }
         ],
         "annotations": [
