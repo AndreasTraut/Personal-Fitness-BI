@@ -10,6 +10,8 @@ Was man nicht misst, kann man nicht managen. Dieses Projekt ist eine vollständi
 
 **Andreas Traut** ist ein Senior BI-Entwickler, der sich auf Data Warehousing, SQL Server und Microsoft BI Stack spezialisiert hat.
 
+🔗 [Schau dir meinen LinkedIn Post zu diesem Repository an](https://www.linkedin.com/posts/activity-7411855394114936832-ibII?utm_source=share&utm_medium=member_desktop&rcm=ACoAADWo6UkB3Ls-cknBjJp65Pr39uBAnhlOw_A)
+
 🔗 [Vernetze dich auf LinkedIn](https://www.linkedin.com/in/andreas-traut-89340/)
 
 🔗 [Schaue dir weitere, interessante BI Umsetzungen an](https://github.com/AndreasTraut)
